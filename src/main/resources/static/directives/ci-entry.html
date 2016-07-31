@@ -1,0 +1,27 @@
+<div class="ci-entry ci-entry-{{name}}">
+    <label class="ci-label ci-label-{{name}}" for="{{path}}">{{label}}</label>
+
+
+    <x-ci-input-string ng-if="type=='string'"
+                       class="ci-input ci-input-type-string ci-input-{{name}}"
+                       id="{{path}}" value="{{value}}">
+    </x-ci-input-string>
+
+    <x-ci-input-date ng-if="type=='date'"
+                     class="ci-input ci-input-type-date ci-input-{{name}}"
+                     id="{{path}}" value="{{value}}">
+    </x-ci-input-date>
+
+    <x-ci-input-textarea ng-if="type=='textarea'"
+                         class="ci-input ci-input-type-textarea ci-input-{{name}}"
+                         id="{{path}}" value="{{value}}">
+    </x-ci-input-textarea>
+
+    <div ng-if="labelAdd" ng-click="addField()"
+         class="glyphicon glyphicon-plus-sign multi-control">
+    </div>
+    <div ng-if="labelDelete" ng-click="deleteField()"
+         class="glyphicon glyphicon-minus-sign multi-control">
+    </div>
+
+</div>

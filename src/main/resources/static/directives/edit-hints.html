@@ -1,0 +1,48 @@
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-xs-3">
+                Labels:
+            </div>
+            <div class="col-xs-5">
+                <select style="width:100%" ng-model="hintsDocs.current"
+                        ng-disabled="editingHints"
+                        ng-options="hint.name for hint in hintsDocs.all track by hint.id"
+                        ng-change="formatterChanged(hintsDocs)"/>
+                </select>
+            </div>
+
+            <div class="col-xs-4">
+                <div class="btn-group">
+
+                    <input type="image" src="/img/clone.svg"
+                         class="formatter-edit-icon"
+                         ng-click="cloneDoc(hintsDocs)"
+                         tooltip="clone"/>
+                    <input type="image" src="/img/trash.svg"
+                         class="formatter-edit-icon"
+                         ng-click="deleteFormatterDlg(hintsDocs)"
+                         ng-disabled="!canEdit(user, hintsDocs)"
+                         tooltip="delete"/>
+
+                    <input type="image" src="/img/pen.svg"
+                         class="formatter-edit-icon"
+                         ng-click="editDlg(hintsDocs)"
+                         ng-show="canEdit(user, hintsDocs)"
+                         tooltip="edit"/>
+                    <input type="image" src="/img/eye.svg"
+                         class="formatter-edit-icon"
+                         ng-click="viewDlg(hintsDocs)"
+                         ng-show="!canEdit(user, hintsDocs)"/>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="row">
+            <div class="col-xs-12" class="formatter-explanation">
+                Here you can change the labels and types of fields in the document.
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,35 @@
+<div class="panel panel-primary ">
+    <div class="panel-heading">
+        <h3 class="panel-title">Edit Template</h3>
+        <br/>
+
+        <p>
+            This CSS 3.0 defines the layout of the input screen below
+        </p>
+    </div>
+    <div class="panel-body">
+        <div ui-codemirror="{ onLoad : codemirrorLoaded }"
+             ng-model="formatter.content"
+             ui-codemirror-opts="editorOptions">
+        </div>
+    </div>
+
+    <div class="panel-footer clearfix">
+        <div ng-show="formatter.editable" class="pull-left">
+            <input ng-model="formatter.name" />
+            <button type="button" class="btn btn-small" ng-click="rename()"
+                    ng-disabled="!canRename()">
+                Rename
+            </button>
+        </div>
+        <div class="pull-right">
+            <button ng-show="formatter.editable"
+                    type="button" class="btn btn-primary" ng-click="ok()"  ng-disabled="!canSave()">
+                Save & Exit
+            </button>
+            <button type="button" class="btn btn-default" ng-click="cancel()">
+                Cancel
+            </button>
+        </div>
+    </div>
+</div>

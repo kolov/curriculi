@@ -1,0 +1,34 @@
+<div id="hello-user">
+    <div ng-show="user.identity" class="header-container">
+        <div class="header-item">
+            <div>{{user.identity.displayName}}</div>
+        </div>
+
+        <div class="header-item" ng-show="user.identity.image.url">
+            <img src="{{user.identity.image.url}}"/>
+        </div>
+        <div class="header-item" ng-show="user.identity.image.url">
+            <img src="/img/exit.svg" width="30px" ng-click="logout()"/>
+        </div>
+        <!--div class="header-item" ng-show="user.identity.image.url">
+            <img src="/static/img/pen.svg" width="30px"  />
+        </div-->
+    </div>
+
+    <div ng-hide="user.identity" style="margin-top: 20px;">
+        <div class="header-item" style="margin-top: 5px;">Sign in so that you can come back to your documents later.
+        </div>
+        <div class="header-item" style="width: 10em;">
+            <a ng-click="login('google')" class="btn btn-block  btn-sm btn-social btn-google">
+                <i class="fa fa-google-plus"></i> Sign in
+            </a>
+        </div>
+        <form id="login-form-google" action="/login" method="POST">
+            <input type="hidden" name="identifier"
+                   value="https://accounts.google.com/o/oauth2/auth?response_type=token&scope=https://www.googleapis.com/auth/userinfo.email&redirect_uri=http://localhost:3000/oauth2callback&client_id=704952866510-2jmnll0l77mc14dj08hv4r9mk68g7aqd.apps.googleusercontent.com"/>
+        </form>
+
+    </div>
+
+</div>
+

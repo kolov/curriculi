@@ -1,0 +1,51 @@
+<div>
+    <div ng-repeat="xsd in xsds">
+        <div class="xsd-template">
+
+            <a ng-click="editNew(xsd.id)" tooltip="Click to create a new CV based on this template">{{xsd
+                .name}}</a>
+
+            <!--div ng-if="env=='dev'" style="float: left;">
+                &nbsp;
+                <a href="edit-develop/{{xsd.id}}"> <button class="btn btn-xs" >develop</button></a>
+            </div-->
+
+
+            <div class="xsd-example" ng-repeat="id in examples[xsd.id]">
+                <a ng-click="openExample(id)">
+                    <img class="formatter-edit-icon"
+                         src=""//document-example.svg"
+                         tooltip="See an example"/>
+                </a>
+
+            </div>
+
+            <div ng-if="mayEditTemplates" class="btn-group">
+
+                <img src=""//clone.svg"
+                     class="formatter-edit-icon"
+                     ng-click="cloneXsdDlg( $index )"
+                     tooltip="clone"/>
+                <img src=""//pen.svg"
+                     class="formatter-edit-icon"
+                     ng-if="canEditXsd(user,$index)"
+                     ng-click="editXsdDlg( $index )"
+                     tooltip="edit"/>
+
+
+                <img src=""//eye.svg"
+                     class="formatter-edit-icon"
+                     ng-if="!canEditXsd(user,$index)"
+                     ng-click="viewXsdDlg( $index )"
+                     tooltip="view"/>
+                <img src=""//trash.svg"
+                     class="formatter-edit-icon"
+                     ng-if="canEditXsd(user,$index)"
+                     ng-click="deleteXsdDlg( $index )"/>
+
+
+            </div>
+
+        </div>
+    </div>
+</div>

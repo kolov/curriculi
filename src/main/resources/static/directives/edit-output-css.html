@@ -1,0 +1,52 @@
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-xs-3">
+                <div>PDF style:</div>
+                <input type="image" src="/img/questionmark.svg"
+                       class="formatter-edit-icon"
+                       tooltip=" The Output Style defines the layout of the PDF. It is CSS 2.1. You can clone and edit the style"/>
+
+            </div>
+
+            <div class="col-xs-5">
+                <select style="width:100%" ng-model="outputCssDocs.current"
+                        ng-disabled="editingOutputCss"
+                        ng-options="item.name for item in outputCssDocs.all track by item.id"
+                        ng-change="formatterChanged(outputCssDocs)"/>
+                </select>
+            </div>
+            <div class="col-xs-4">
+                <div class="btn-group">
+
+                    <input type="image" src="/img/clone.svg"
+                           class="formatter-edit-icon"
+                           ng-click="cloneDoc(outputCssDocs)"
+                           tooltip="clone"/>
+                    <input type="image" src="/img/trash.svg"
+                           class="formatter-edit-icon"
+                           ng-click="deleteFormatterDlg(outputCssDocs)"
+                           ng-disabled="canEdit(user, outputCssDocs)"
+                           tooltip="delete"/>
+
+                    <input type="image" src="/img/pen.svg"
+                           class="formatter-edit-icon"
+                           ng-click="editDlg(outputCssDocs)"
+                           ng-show="canEdit(user, outputCssDocs)"
+                           tooltip="edit"/>
+                    <input type="image" src="/img/eye.svg"
+                           class="formatter-edit-icon"
+                           ng-click="viewDlg(outputCssDocs)"
+                           ng-show="!canEdit(user, outputCssDocs)"
+                           tooltip="view"/>
+                </div>
+            </div>
+        </div>
+        <!--div class="row">
+            <div class="col-xs-12" class="formatter-explanation">
+                The Output Style defines the layout of the PDF.
+                It is CSS 2.1.
+            </div>
+        </div-->
+    </div>
+</div>

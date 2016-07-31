@@ -1,0 +1,15 @@
+<div ng-class="getClasses()"  >
+    <div class="ci-title-bar">
+        <i class="ci-arrow-down fa fa-toggle-down" ng-click="toggle()"></i>
+        <i class="ci-arrow-right fa fa-toggle-right" ng-click="toggle()"></i>
+        <p class="ci-title">{{title}}</p>
+
+        <div ng-if="labelAdd" ng-click="addField()"
+             class="glyphicon glyphicon-plus-sign multi-control">
+        </div>
+        <div ng-if="labelDelete" ng-click="deleteField()"
+             class="glyphicon glyphicon-minus-sign multi-control">
+        </div>
+    </div>
+    <div class="ci-body" ng-transclude></div>
+</div>

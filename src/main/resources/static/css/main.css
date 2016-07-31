@@ -1,0 +1,230 @@
+body {
+    font-family: 'Open Sans Condensed', sans-serif;
+}
+
+.group-head {
+    background-color: coral;
+    margin-top: 20px;
+    margin-right: 8em;
+    padding-left: 2em;
+    border-radius: 8px;
+}
+
+p.group-head + p {
+    width: 25em;
+}
+
+.group-head.first {
+    margin-top: 0px;
+}
+
+.small-input {
+    width: 4em;
+}
+
+.result-row {
+    font-family: Courrier;
+}
+
+#formatted-area {
+    border-style: solid;
+    border-width: 2px;
+}
+
+.xsd-template a {
+    cursor: pointer;
+    cursor: hand;
+}
+.why {
+    cursor: pointer;
+    cursor: hand;
+}
+.right-align {
+    text-align: right;
+}
+h2 {
+    margin-top: 10px;
+    margin-bottom: 0px;
+    cursor: pointer;
+    padding: 1px 3px;
+}
+
+p {
+    margin-top: 0px;
+    padding: 3px;
+    text-align: justify;
+    overflow: hidden;
+
+    font-size: 12pt;
+}
+
+.section-explanation > p {
+    font-size: small;
+    padding: 1em;
+}
+
+/** button {border: 1px #AAA solid; padding: 4px 10px;}       **/
+.hide {
+    display: none;
+}
+
+.code-editor-holder {
+    border-style: solid;
+    border-color: #303020;
+}
+
+#cookies-warning {
+    height: 2.5em;
+    background-color: #901218;
+    width: 100%;
+    color: white;
+    text-align: center;
+    padding: 5px;
+}
+
+#usage-warning {
+    height: 2em;
+    background-color: #9f191f;
+    width: 100%;
+    color: white;
+    text-align: center;
+    padding: 5px;
+}
+
+.multi-control {
+    cursor: pointer;
+}
+
+.app-modal-window .modal-dialog {
+    width: 85%;
+}
+
+#hello-user {
+    float: right;
+}
+
+.header-container {
+    display: flex;
+    min-height: 40px;
+}
+
+.header-item {
+    align-self: baseline;
+    margin: 0 5px 0 5px;
+    float: left;
+}
+
+/** Edit in place **/
+.edit-in-place div {
+    cursor: pointer;
+    border-style: solid;
+    border-color: #eeeeee;
+    border-radius: 4px;
+}
+
+.edit-in-place input {
+    display: none;
+}
+
+.edit-in-place.active div {
+    display: none;
+}
+
+.edit-in-place.active input {
+    display: inline-block;
+}
+
+.xsd-template {
+    clear: left;
+    height: 15pt;
+    margin-left: 2em;
+}
+
+.xsd-template > a {
+    color: #006600;
+    float: left;
+
+}
+
+.xsd-template .xsd-example a {
+    margin-left: 10px;
+}
+
+.xsd-template .xsd-example {
+    float: left;
+}
+
+.xsd-template .btn-group {
+    margin-left: 10px;
+}
+
+.formatter-edit-icon {
+    height: 12pt;
+}
+
+.pdf-icon {
+    height: 18pt;
+}
+
+.growl {
+    position: absolute;
+    top: 55px;
+    right: 20px;
+    width: 240px;
+}
+
+.fade-hide, .fade-show {
+    -webkit-transition: all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
+    -moz-transition: all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
+    -o-transition: all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
+    transition: all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
+}
+
+.fade-hide {
+    opacity: 1;
+}
+
+.fade-hide.fade-hide-active {
+    opacity: 0;
+}
+
+.fade-show {
+    opacity: 0;
+}
+
+.fade-show.fade-show-active {
+    opacity: 1;
+}
+
+.panel-heading p {
+    font-family: 'Open Sans Condensed', sans-serif;
+}
+
+.formatter-explanation {
+    font-size: smaller;
+    margin-top: 1em;
+    margin-left: 1em;
+    margin-right: 1em;
+}
+
+#editor-frame {
+    width: 100%;
+    height: 5000px;
+    scrolling: no;
+    overflow: hidden;
+}
+
+div.tooltip {
+    width: 270px;
+}
+
+div.tooltip-inner {
+    max-width: 280px;
+}
+
+.navbar  .navbar-header .navbar-brand   {
+    color: #013461;
+    font-weight: 700;
+    font-style: italic;
+    font-size: x-large;
+}
