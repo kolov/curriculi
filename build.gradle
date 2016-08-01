@@ -10,6 +10,28 @@ buildscript {
     }
 }
 
+plugins {
+    id 'com.craigburke.bower-installer' version '2.5.1'
+}
+
+bower {
+    installBase = 'src/main/resources/static/bower' // <1>
+
+    'angular'('1.2.9')
+    'bootstrap'('3.0.0')
+    'angular-ui-codemirror'('0.1.7')
+    'bootstrap-social'('latest')
+    'angular'('1.2.19')
+    'angular-route'('1.2.19')
+    'angular-resource'('1.2.19')
+    'angular-ui-router'('0.2.13')
+    'angular-bootstrap'('0.12.1')
+    'angular-sanitize'('1.2.19')
+    'angular-ui-switch'('0.1.0')
+    'angular-load'('0.2.0')
+    'underscore'('1.8.3')
+}
+
 apply plugin: 'java'
 apply plugin: 'scala'
 apply plugin: 'idea'
@@ -23,7 +45,7 @@ ext {
 
 jar {
     baseName = 'spring-boot-scala-web'
-    version =  '0.1.5'
+    version = '0.1.5'
 }
 
 repositories {
