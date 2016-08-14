@@ -2,63 +2,58 @@ package curri.web
 
 import java.io.IOException
 import javax.servlet._
-import javax.servlet.http.HttpServletRequest
+import javax.servlet.http.{Cookie, HttpServletRequest, HttpServletResponse}
 
 import curri.domain.User
-import curri.service.{CookieRepository, UserRepository}
+import curri.service.UserRepository
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
 @Component
-class CookieFilter @Autowired()(private val userRepository: UserRepository,
-                                private val cookieRepository: CookieRepository) extends Filter {
+class CookieFilter @Autowired()(private val userRepository: UserRepository) extends Filter {
 
   val LOG = LoggerFactory.getLogger(getClass)
 
-  private val USER: String = "USER"
-  private val KNOWN_COOKIE: String = "USER"
+  val COOKIE_NAME: String = "curri"
+  val COOKIE_AGE: Int = 30 * 24 * 60 * 60
 
   @throws[ServletException]
   def init(filterConfig: FilterConfig) {
   }
 
+
   @throws[IOException]
   @throws[ServletException]
   def doFilter(request: ServletRequest, response: ServletResponse, chain: FilterChain): Unit = {
-    val session = request.asInstanceOf[HttpServletRequest].getSession(true);
-    val cookieValue = request.asInstanceOf[HttpServletRequest]
-      .getCookies.filter(_.getName.equals("curri"))
-      .map(_.getValue).head
+    val cookies: Array[Cookie] = request.asInstanceOf[HttpServletRequest]
+      .getCookies
 
-    if (cookieValue != null && cookieValue.equals(session.getAttribute(KNOWN_COOKIE))) {
-      chain.doFilter(request, response)
-      return
+    var cookieValue: Option[String] = None
+    if (cookies != null ) {
+      cookieValue = cookies.find(_.getName.equals(COOKIE_NAME)).map(_.getValue)
     }
 
-    var user: User = session.getAttribute(USER).asInstanceOf[User]
-    if (user != null) {
-      return user
-    } else if (cookieId != null) {
-      val cookie = cookieRepository.findOne(cookieId)
-      if (cookie == null) {
-        LOG.warn("Received cookie with unknown value")
-      } else {
-        user = userRepository.findOne(cookie.userId)
-        if (user != null) {
-          session.setAttribute(USER, user)
-          return user
-        } else {
-          LOG.warn("Cookie with unknown user id")
-        }
+    var allSet: Boolean = false
+    var user: User = null
+    if (cookieValue.isDefined) {
+      val maybeUser: User = userRepository.findByCookieValue(cookieValue.get)
+      if (maybeUser != null) {
+        allSet = true
+        user = maybeUser
       }
     }
-    // no success so far
-    user = new User
-    userRepository.save(user)
-    val cookie = new Cookie(user.id)
-    cookieRepository.save(cookie)
-    servletResponse.addCookie(newCookie)
+
+    if (!allSet) {
+      user = new User()
+      userRepository.save(user)
+    }
+    request.setAttribute("USER", user)
+    chain.doFilter(request, response)
+    val cookie: Cookie = new Cookie(COOKIE_NAME, user.getCookieValue)
+    cookie.setMaxAge(COOKIE_AGE)
+    response.asInstanceOf[HttpServletResponse].addCookie(cookie)
+
   }
 
   def destroy {

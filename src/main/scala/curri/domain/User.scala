@@ -3,32 +3,28 @@ package curri.domain
 import javax.persistence.Id
 import javax.persistence.GeneratedValue
 import java.lang.Long
+import java.util.UUID
 import javax.persistence.Entity
+
 import scala.beans.BeanProperty
 import org.hibernate.validator.constraints.NotEmpty
 
-
+@Entity
 class User() {
+
+  cookieValue = UUID.randomUUID().toString
+
+  acceptsCookies = false;
 
   @Id
   @GeneratedValue
   @BeanProperty
-  var id: Long = _
+  var id: String = _
 
   @BeanProperty
-  var name: String = _
+  var cookieValue: String = _
 
   @BeanProperty
-  var firstName: String = _
-
-  @BeanProperty
-  var lastName: String = _
-
-  def this(name: String, firstName: String, lastName: String) {
-    this()
-    this.name = name;
-    this.firstName = firstName;
-    this.lastName = lastName;
-  }
+  var acceptsCookies: Boolean = _
 
 }
