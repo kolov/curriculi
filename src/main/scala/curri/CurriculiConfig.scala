@@ -1,11 +1,10 @@
 package curri
 
-import javax.servlet.Filter
-
 import curri.web.CookieFilter
-import org.springframework.context.annotation.{Bean, ComponentScan, Configuration}
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration
 import org.springframework.boot.context.embedded.FilterRegistrationBean
+import org.springframework.context.annotation.{ComponentScan, Configuration}
 
 @Configuration
 @EnableAutoConfiguration
@@ -24,4 +23,7 @@ class CurriculiConfig {
     registration.setOrder(1);
     return registration;
   }
+
+  @Value("${curri.properties.read}")
+  var propertiesRead: String = ""
 }
