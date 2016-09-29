@@ -24,6 +24,4 @@ class CurriculiConfig {
     return registration;
   }
 
-  @Value("${curri.properties.read}")
-  var propertiesRead: String = ""
 }
