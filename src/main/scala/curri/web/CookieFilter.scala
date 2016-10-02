@@ -30,21 +30,16 @@ class CookieFilter @Autowired()(private val userRepository: UserRepository) exte
       .getCookies
 
     var cookieValue: Option[String] = None
-    if (cookies != null ) {
+    if (cookies != null) {
       cookieValue = cookies.find(_.getName.equals(COOKIE_NAME)).map(_.getValue)
     }
 
-    var allSet: Boolean = false
     var user: User = null
     if (cookieValue.isDefined) {
-      val maybeUser: User = userRepository.findByCookieValue(cookieValue.get)
-      if (maybeUser != null) {
-        allSet = true
-        user = maybeUser
-      }
+      user = userRepository.findByCookieValue(cookieValue.get)
     }
 
-    if (!allSet) {
+    if (user == null) {
       user = new User()
       userRepository.save(user)
     }

@@ -15,7 +15,7 @@ plugins {
 }
 
 bower {
-    installBase = 'src/main/resources/static/bower'
+    installBase = 'bower/components/raw'
 
     'angular'('1.2.9')
     'bootstrap'('3.0.0')
@@ -64,6 +64,8 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-data-mongodb")
     compile("org.springframework.boot:spring-boot-devtools")
     compile("org.springframework.boot:spring-boot-starter-actuator")
+    compile("org.springframework.boot:spring-boot-starter-cloud-connectors")
+    compile("org.springframework.boot:spring-boot-starter-thymeleaf")
 //    compile("org.springframework.boot:spring-boot-starter-security")
 //    compile("org.springframework.security.oauth:spring-security-oauth2")
 
@@ -84,6 +86,24 @@ dependencyManagement {
     }
 }
 
+task bowerSyncJavascript(type: Sync) {
+    from 'bower/components/raw'
+    into "bower/components/synced/static/assets"
+    exclude '**/README.md'
+    exclude '**/angular*/index.js'
+    exclude '**/angular*/ng*.js'
+
+    dependsOn bowerInstall
+}
+
 task wrapper(type: Wrapper) {
     gradleVersion = '2.9'
+}
+
+sourceSets {
+    main {
+        resources {
+            srcDir 'bower/components/synced'
+        }
+    }
 }

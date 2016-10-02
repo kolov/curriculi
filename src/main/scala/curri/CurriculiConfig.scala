@@ -1,10 +1,9 @@
 package curri
 
 import curri.web.CookieFilter
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration
-import org.springframework.boot.context.embedded.FilterRegistrationBean
-import org.springframework.context.annotation.{ComponentScan, Configuration}
+import org.springframework.boot.web.servlet.FilterRegistrationBean
+import org.springframework.context.annotation.{Bean, ComponentScan, Configuration}
 
 @Configuration
 @EnableAutoConfiguration
@@ -12,14 +11,14 @@ import org.springframework.context.annotation.{ComponentScan, Configuration}
 class CurriculiConfig {
 
 
-  //@Bean
-  def someFilterRegistration(cookieFilter: CookieFilter) {
+  @Bean
+  def someFilterRegistration(cookieFilter: CookieFilter): FilterRegistrationBean = {
 
     val registration = new FilterRegistrationBean()
     registration.setFilter(cookieFilter);
-    registration.addUrlPatterns("/url/*");
-    registration.addInitParameter("paramName", "paramValue");
-    registration.setName("someFilter");
+    registration.addUrlPatterns("/v1.0/*");
+    //registration.addInitParameter("paramName", "paramValue");
+    registration.setName("cookieFilter");
     registration.setOrder(1);
     return registration;
   }
