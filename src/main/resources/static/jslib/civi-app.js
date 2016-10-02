@@ -156,12 +156,18 @@ civiModule.factory('currentService', ['$resource', function ($resource) {
 }]);
 
 civiModule.factory('usersService', ['$resource', function ($resource) {
-  return $resource('/user', {},
+  return $resource('/v1.0/user', {},
     {
       'query': {isArray: false}
     });
 }]);
 
+civiModule.factory('acceptCookieService', ['$resource', function ($resource) {
+  return $resource('/v1.0/user/accepts-cookies', {},
+    {
+      'accept': {method: 'POST'}
+    });
+}]);
 
 civiModule.factory('examplesService', ['$resource', function ($resource) {
   return $resource('/v1/examples', {},
@@ -170,12 +176,7 @@ civiModule.factory('examplesService', ['$resource', function ($resource) {
     });
 }]);
 
-civiModule.factory('acceptCookieService', ['$resource', function ($resource) {
-  return $resource('/accept-cookies', {},
-    {
-      'accept': {method: 'POST'}
-    });
-}]);
+
 civiModule.factory('logoutService', ['$resource', function ($resource) {
   return $resource('/logout', {},
     {

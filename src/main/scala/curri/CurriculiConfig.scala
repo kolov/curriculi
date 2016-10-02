@@ -16,8 +16,7 @@ class CurriculiConfig {
 
     val registration = new FilterRegistrationBean()
     registration.setFilter(cookieFilter);
-    registration.addUrlPatterns("/v1.0/*");
-    //registration.addInitParameter("paramName", "paramValue");
+    registration.addUrlPatterns("/*");
     registration.setName("cookieFilter");
     registration.setOrder(1);
     return registration;

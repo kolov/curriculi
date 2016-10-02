@@ -10,7 +10,7 @@ civiModule.directive('cookiesWarning', function () {
         );
       };
       $scope.showWarning = function () {
-        return !($scope.user && $scope.user['accepts-cookies']);
+        return !($scope.user && $scope.user.acceptsCookies);
       };
     },
 

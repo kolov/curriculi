@@ -44,10 +44,13 @@ class CookieFilter @Autowired()(private val userRepository: UserRepository) exte
       userRepository.save(user)
     }
     request.setAttribute("USER", user)
-    chain.doFilter(request, response)
+
     val cookie: Cookie = new Cookie(COOKIE_NAME, user.getCookieValue)
     cookie.setMaxAge(COOKIE_AGE)
+    cookie.setPath("/")
     response.asInstanceOf[HttpServletResponse].addCookie(cookie)
+
+    chain.doFilter(request, response)
 
   }
 

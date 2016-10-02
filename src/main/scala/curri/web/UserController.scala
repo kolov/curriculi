@@ -10,21 +10,26 @@ import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.{CookieValue, RequestMapping, RequestMethod, ResponseBody}
 
 @Controller
-@RequestMapping(Array("/user"))
-class UserController @Autowired()(private val userRepository: UserRepository ) {
+@RequestMapping(Array("/v1.0/user"))
+class UserController @Autowired()(private val userRepository: UserRepository) {
 
   val LOG = LoggerFactory.getLogger(getClass)
 
   val USER: String = "USER"
 
 
-  @RequestMapping(method = Array(RequestMethod.GET))
+  @RequestMapping(value = Array(""), method = Array(RequestMethod.GET))
   @ResponseBody
-  def current(@CookieValue(value = "curri") cookieId: String,
-              servletRequest: HttpServletRequest,
-              servletResponse: HttpServletResponse) {
-    val session = servletRequest.getSession(true);
-    return session.getAttribute(USER).asInstanceOf[User]
+  def current(servletRequest: HttpServletRequest): User =  {
+    servletRequest.getAttribute(USER).asInstanceOf[User]
+  }
 
+  @RequestMapping(value = Array("accepts-cookies"), method = Array(RequestMethod.POST))
+  @ResponseBody
+  def acceptsCookies(servletRequest: HttpServletRequest): User = {
+    val user = servletRequest.getAttribute(USER).asInstanceOf[User]
+    user.setAcceptsCookies(true)
+    userRepository.save(user)
+    return user
   }
 }

@@ -14,7 +14,7 @@ class User() {
 
   cookieValue = UUID.randomUUID().toString
 
-  acceptsCookies = false;
+  acceptsCookies = false
 
   @Id
   @GeneratedValue
