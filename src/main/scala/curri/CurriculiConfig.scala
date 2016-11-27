@@ -11,7 +11,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.boot.web.servlet.FilterRegistrationBean
 import org.springframework.context.annotation.{Bean, ComponentScan, Configuration}
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
+import org.springframework.security.config.annotation.web.configuration.{EnableWebSecurity, WebSecurityConfigurerAdapter}
 import org.springframework.security.oauth2.client.filter.OAuth2ClientAuthenticationProcessingFilter
 import org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeResourceDetails
 import org.springframework.security.oauth2.client.{OAuth2ClientContext, OAuth2RestTemplate}
@@ -23,6 +23,7 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository
 @EnableAutoConfiguration
 @ComponentScan
 @EnableOAuth2Client
+@EnableWebSecurity
 @SpringBootApplication
 class CurriculiConfig extends WebSecurityConfigurerAdapter {
 

@@ -2,20 +2,34 @@ package curri.domain
 
 import javax.persistence.{GeneratedValue, Id}
 
+import com.fasterxml.jackson.annotation.{JsonIgnore, JsonProperty}
 import curri.domain.IdentityProvider.IdentityProvider
 import org.springframework.data.mongodb.core.mapping.Document
 
 import scala.beans.BeanProperty
 
 @Document
-class Identity(
-                @BeanProperty IdentityProvider: IdentityProvider,
-                @BeanProperty firstName: String,
-                @BeanProperty lastName: String,
-                @BeanProperty providerId: String) {
+class Identity {
 
   @Id
   @GeneratedValue
   var id: String = _
+
+  @BeanProperty
+ // @JsonProperty("provider")
+  @JsonIgnore
+  var IdentityProvider: IdentityProvider = _
+
+  @BeanProperty
+  @JsonProperty("first-name")
+  var firstName: String = _
+
+  @BeanProperty
+  @JsonProperty("last-name")
+  var lastName: String = _
+
+  @BeanProperty
+  @JsonProperty("id")
+  var providerId: String = _
 
 }
