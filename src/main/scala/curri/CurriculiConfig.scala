@@ -4,9 +4,9 @@ import javax.servlet.Filter
 
 import curri.web.CookieFilter
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.autoconfigure.{EnableAutoConfiguration, SpringBootApplication}
-import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso
+import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.security.oauth2.resource.{ResourceServerProperties, UserInfoTokenServices}
+import org.springframework.boot.autoconfigure.{EnableAutoConfiguration, SpringBootApplication}
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.boot.web.servlet.FilterRegistrationBean
 import org.springframework.context.annotation.{Bean, ComponentScan, Configuration}
@@ -17,6 +17,7 @@ import org.springframework.security.oauth2.client.token.grant.code.Authorization
 import org.springframework.security.oauth2.client.{OAuth2ClientContext, OAuth2RestTemplate}
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository
 
 @Configuration
 @EnableAutoConfiguration
@@ -32,6 +33,10 @@ class CurriculiConfig extends WebSecurityConfigurerAdapter {
   override def configure(http: HttpSecurity): Unit = {
 
     http
+      .logout().logoutSuccessUrl("/").permitAll()
+      .and().csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+
+      .and()
       .antMatcher("/**")
       .addFilterBefore(ssoFilter, classOf[BasicAuthenticationFilter])
       .authorizeRequests()
@@ -39,8 +44,6 @@ class CurriculiConfig extends WebSecurityConfigurerAdapter {
       .authenticated()
       .anyRequest()
       .permitAll()
-    //.and().logout().logoutSuccessUrl("/").permitAll()
-    //.and().csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
 
   }
 
@@ -75,5 +78,11 @@ class CurriculiConfig extends WebSecurityConfigurerAdapter {
     registration.setOrder(1);
     return registration;
   }
+
+}
+
+object CurriculiConfig extends App {
+
+    SpringApplication.run(classOf[CurriculiConfig]);
 
 }

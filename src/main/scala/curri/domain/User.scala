@@ -1,30 +1,30 @@
 package curri.domain
 
-import javax.persistence.Id
-import javax.persistence.GeneratedValue
-import java.lang.Long
 import java.util.UUID
-import javax.persistence.Entity
+import javax.persistence.{GeneratedValue, Id}
+
+import org.springframework.data.mongodb.core.index.Indexed
+import org.springframework.data.mongodb.core.mapping.{DBRef, Document}
 
 import scala.beans.BeanProperty
-import org.hibernate.validator.constraints.NotEmpty
 
-@Entity
+@Document
 class User() {
-   cookieValue = UUID.randomUUID().toString
 
+  cookieValue = UUID.randomUUID().toString
   acceptsCookies = false
 
   @Id
   @GeneratedValue
-  @BeanProperty
   var id: String = _
 
   @BeanProperty
+  @Indexed
   var cookieValue: String = _
 
+  @DBRef
   @BeanProperty
-  var identity: String = _
+  var identity: Identity = _
 
   @BeanProperty
   var acceptsCookies: Boolean = _

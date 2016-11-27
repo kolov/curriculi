@@ -2,6 +2,11 @@ body {
     font-family: 'Open Sans Condensed', sans-serif;
 }
 
+#hello-user .btn-social {
+    height: 28px;
+    width: 99px;
+}
+
 .group-head {
     background-color: coral;
     margin-top: 20px;
@@ -35,13 +40,16 @@ p.group-head + p {
     cursor: pointer;
     cursor: hand;
 }
+
 .why {
     cursor: pointer;
     cursor: hand;
 }
+
 .right-align {
     text-align: right;
 }
+
 h2 {
     margin-top: 10px;
     margin-bottom: 0px;
@@ -222,7 +230,7 @@ div.tooltip-inner {
     max-width: 280px;
 }
 
-.navbar  .navbar-header .navbar-brand   {
+.navbar .navbar-header .navbar-brand {
     color: #013461;
     font-weight: 700;
     font-style: italic;
