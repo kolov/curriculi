@@ -32,6 +32,16 @@ bower {
     'underscore'('1.8.3')
 }
 
+task bowerSyncJavascript(type: Sync) {
+    from 'bower/components/raw'
+    into "bower/components/synced/static/assets"
+    exclude '**/README.md'
+    exclude '**/angular*/index.js'
+    exclude '**/angular*/ng*.js'
+
+    dependsOn bowerInstall
+}
+
 apply plugin: 'java'
 apply plugin: 'scala'
 apply plugin: 'idea'
@@ -66,8 +76,8 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-actuator")
     compile("org.springframework.boot:spring-boot-starter-cloud-connectors")
     compile("org.springframework.boot:spring-boot-starter-thymeleaf")
-//    compile("org.springframework.boot:spring-boot-starter-security")
-//    compile("org.springframework.security.oauth:spring-security-oauth2")
+    compile("org.springframework.boot:spring-boot-starter-security")
+    compile("org.springframework.security.oauth:spring-security-oauth2")
 
     compile("org.hibernate:hibernate-validator")
     compile("org.hsqldb:hsqldb")
@@ -82,19 +92,10 @@ dependencyManagement {
     imports {
         mavenBom 'org.springframework.cloud:spring-cloud-dependencies:Camden.RELEASE'
         mavenBom 'org.springframework.cloud:spring-cloud-netflix:1.2.0.RELEASE'
-
     }
 }
 
-task bowerSyncJavascript(type: Sync) {
-    from 'bower/components/raw'
-    into "bower/components/synced/static/assets"
-    exclude '**/README.md'
-    exclude '**/angular*/index.js'
-    exclude '**/angular*/ng*.js'
 
-    dependsOn bowerInstall
-}
 
 task wrapper(type: Wrapper) {
     gradleVersion = '2.9'
@@ -107,3 +108,5 @@ sourceSets {
         }
     }
 }
+
+build.dependsOn bowerSyncJavascript
