@@ -21,7 +21,12 @@ class UserController @Autowired()(private val userRepository: UserRepository) {
   @RequestMapping(value = Array(""), method = Array(RequestMethod.GET))
   @ResponseBody
   def current(servletRequest: HttpServletRequest): User =  {
-    servletRequest.getAttribute(USER).asInstanceOf[User]
+    val user = servletRequest.getAttribute(USER).asInstanceOf[User]
+    val principal = servletRequest.getUserPrincipal
+    if(principal != null) {
+      user.setIdentity(principal.getName)
+    }
+    user
   }
 
   @RequestMapping(value = Array("accepts-cookies"), method = Array(RequestMethod.POST))
@@ -30,6 +35,6 @@ class UserController @Autowired()(private val userRepository: UserRepository) {
     val user = servletRequest.getAttribute(USER).asInstanceOf[User]
     user.setAcceptsCookies(true)
     userRepository.save(user)
-    return user
+    user
   }
 }

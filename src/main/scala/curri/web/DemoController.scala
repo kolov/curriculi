@@ -1,14 +1,14 @@
 package curri.web
 
-import javax.servlet.http.{HttpServletRequest, HttpServletResponse}
-
-import curri.domain.User
-import curri.service.UserRepository
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.{Autowired, Value}
 import org.springframework.core.env.PropertyResolver
 import org.springframework.stereotype.Controller
-import org.springframework.web.bind.annotation.{CookieValue, RequestMapping, RequestMethod, ResponseBody}
+import org.springframework.web.bind.annotation.{RequestMapping, RequestMethod, ResponseBody}
+
+/**
+  *
+  */
 
 @Controller
 @RequestMapping(Array("/demo"))

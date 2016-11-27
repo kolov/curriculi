@@ -11,8 +11,7 @@ import org.hibernate.validator.constraints.NotEmpty
 
 @Entity
 class User() {
-
-  cookieValue = UUID.randomUUID().toString
+   cookieValue = UUID.randomUUID().toString
 
   acceptsCookies = false
 
@@ -23,6 +22,9 @@ class User() {
 
   @BeanProperty
   var cookieValue: String = _
+
+  @BeanProperty
+  var identity: String = _
 
   @BeanProperty
   var acceptsCookies: Boolean = _

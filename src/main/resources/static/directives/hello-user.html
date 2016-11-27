@@ -10,14 +10,18 @@
         <div class="header-item" ng-show="user.identity.image.url">
             <img src="/img/exit.svg" width="30px" ng-click="logout()"/>
         </div>
-        <!--div class="header-item" ng-show="user.identity.image.url">
-            <img src="/static/img/pen.svg" width="30px"  />
-        </div-->
+        <button ng-click="logout()" class="btn btn-primary">Logout</button>
     </div>
 
     <div ng-hide="user.identity" style="margin-top: 20px;">
         <div class="header-item" style="margin-top: 5px;">Sign in so that you can come back to your documents later.
         </div>
+
+        <div class="container" ng-show="!home.authenticated">
+            Login with: <a href="/login/facebook">Facebook</a>
+        </div>
+
+
         <div class="header-item" style="width: 10em;">
             <a ng-click="login('google')" class="btn btn-block  btn-sm btn-social btn-google">
                 <i class="fa fa-google-plus"></i> Sign in
