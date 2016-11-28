@@ -32,8 +32,7 @@ class UserControllerTest {
   def exampleTest(): Unit = {
 
     mvc.perform(MockMvcRequestBuilders.get("/user").accept(MediaType.APPLICATION_JSON))
-      .andExpect(MockMvcResultMatchers.status().isOk())
-      .andExpect(MockMvcResultMatchers.content().json("{'user':'HHH'}"));
+      .andExpect(MockMvcResultMatchers.status().isOk());
 
   }
 }
