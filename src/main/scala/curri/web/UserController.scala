@@ -31,7 +31,7 @@ class UserController @Autowired()(private val userRepository: UserRepository) {
 
       if (link contains ("facebook.com")) {
         val identity = new Identity()
-        identity.setIdentityProvider(IdentityProvider.FACEBOOK)
+        identity.setProvider(IdentityProvider.FACEBOOK.toString)
         identity.setFirstName(details.get("first-name").asInstanceOf[String])
         identity.setLastName(details.get("last-name").asInstanceOf[String])
         identity.setProviderId(details.get("id").asInstanceOf[String])

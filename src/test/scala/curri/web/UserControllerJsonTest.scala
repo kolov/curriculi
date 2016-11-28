@@ -2,13 +2,11 @@ package curri.web
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import curri.domain.IdentityProvider._
-import curri.domain.{Identity, IdentityProvider, User}
+import curri.domain.{Identity, User}
 import curri.service.UserRepository
-import org.junit.Before
 import org.assertj.core.api.Assertions
-import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mockito
+import org.junit.{Before, Test}
 import org.springframework.boot.test.autoconfigure.json.JsonTest
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.json.JacksonTester
@@ -18,16 +16,10 @@ import org.springframework.test.util.ReflectionTestUtils
 
 @RunWith(classOf[SpringRunner])
 @JsonTest
-//@Import(Array( classOf[WebSecurityConfiguration],
-//  classOf[AuthenticationConfiguration],
-//  classOf[ObjectPostProcessorConfiguration]))
 @SpringBootTest
-//@EnableWebSecurity
-//@WebAppConfiguration
 class UserControllerJsonTest {
 
   var json: JacksonTester[curri.domain.User] = _
-
 
   @Before
   def setup(): Unit = {
@@ -35,6 +27,7 @@ class UserControllerJsonTest {
   }
 
 
+  //normally created by spring-data, needed to initialize context
   @MockBean
   var userRepo: UserRepository = _
 
@@ -44,7 +37,7 @@ class UserControllerJsonTest {
 
     val user: User = new User()
     val identity = new Identity()
-    identity.setIdentityProvider(FACEBOOK)
+    identity.setProvider(FACEBOOK.toString)
     identity.setFirstName("John")
     identity.setLastName("Doe")
     identity.setProviderId("12345")
@@ -52,8 +45,7 @@ class UserControllerJsonTest {
     ReflectionTestUtils.setField(user, "cookieValue", "abcde")
     ReflectionTestUtils.setField(user, "identity", identity)
 
-    Assertions.assertThat(json.write(user).getJson).isEqualTo("xx")
-    Assertions.assertThat(json.write(user)) .isEqualToJson("user-1-test.json")
+    Assertions.assertThat(json.write(user)).isEqualToJson("user-1-test.json")
 
   }
 }

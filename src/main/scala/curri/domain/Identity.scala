@@ -16,9 +16,8 @@ class Identity {
   var id: String = _
 
   @BeanProperty
- // @JsonProperty("provider")
-  @JsonIgnore
-  var IdentityProvider: IdentityProvider = _
+  @JsonProperty("provider")
+  var provider: String = _
 
   @BeanProperty
   @JsonProperty("first-name")
