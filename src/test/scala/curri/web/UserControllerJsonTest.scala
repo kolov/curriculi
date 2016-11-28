@@ -1,6 +1,8 @@
 package curri.web
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.scala.DefaultScalaModule
+import com.fasterxml.jackson.module.scala.experimental.ScalaObjectMapper
 import curri.domain.IdentityProvider._
 import curri.domain.{Identity, User}
 import curri.service.UserRepository
@@ -23,7 +25,9 @@ class UserControllerJsonTest {
 
   @Before
   def setup(): Unit = {
-    JacksonTester.initFields(this, new ObjectMapper())
+    val mapper = new ObjectMapper() with ScalaObjectMapper
+    mapper.registerModule(DefaultScalaModule)
+    JacksonTester.initFields(this, mapper)
   }
 
 
@@ -37,7 +41,7 @@ class UserControllerJsonTest {
 
     val user: User = new User()
     val identity = new Identity()
-    identity.setProvider(FACEBOOK.toString)
+    identity.setProvider(FACEBOOK)
     identity.setFirstName("John")
     identity.setLastName("Doe")
     identity.setProviderId("12345")
