@@ -26,12 +26,12 @@ class UserController @Autowired()(private val userRepository: UserRepository) {
     val principal = servletRequest.getUserPrincipal
     if (principal != null) {
       val oauth = principal.asInstanceOf[OAuth2Authentication]
-      val details = oauth.getUserAuthentication().getDetails.asInstanceOf[java.util.Map[String,Object]]
+      val details = oauth.getUserAuthentication.getDetails.asInstanceOf[java.util.Map[String,Object]]
       val link = details.get("link").asInstanceOf[String]
 
-      if (link contains ("facebook.com")) {
+      if (link contains "facebook.com") {
         val identity = new Identity()
-        identity.setProvider(IdentityProvider.FACEBOOK.toString)
+        identity.setProvider(IdentityProvider.FACEBOOK)
         identity.setFirstName(details.get("first-name").asInstanceOf[String])
         identity.setLastName(details.get("last-name").asInstanceOf[String])
         identity.setProviderId(details.get("id").asInstanceOf[String])
