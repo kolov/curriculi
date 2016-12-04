@@ -33,6 +33,5 @@ class UserControllerTest {
 
     mvc.perform(MockMvcRequestBuilders.get("/user").accept(MediaType.APPLICATION_JSON))
       .andExpect(MockMvcResultMatchers.status().isOk());
-
   }
 }

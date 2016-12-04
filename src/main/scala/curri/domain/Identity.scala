@@ -4,7 +4,6 @@ import javax.persistence.{GeneratedValue, Id}
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.module.scala.JsonScalaEnumeration
-import curri.domain.IdentityProvider.IdentityProvider
 import org.springframework.data.mongodb.core.mapping.Document
 
 import scala.beans.BeanProperty

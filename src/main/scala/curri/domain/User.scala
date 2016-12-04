@@ -12,9 +12,6 @@ import scala.beans.BeanProperty
 @Document
 class User() {
 
-  cookieValue = UUID.randomUUID().toString
-  acceptsCookies = false
-
   @Id
   @GeneratedValue
   var id: String = _
@@ -28,9 +25,13 @@ class User() {
   @JsonProperty("accepts-cookies")
   var acceptsCookies: Boolean = _
 
-
   @DBRef
   @BeanProperty
   @JsonProperty("identity")
   var identity: Identity = _
+
+  def unknown = {
+    cookieValue = UUID.randomUUID().toString
+    acceptsCookies = false
+  }
 }
