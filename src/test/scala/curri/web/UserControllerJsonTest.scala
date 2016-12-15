@@ -41,10 +41,10 @@ class UserControllerJsonTest {
 
     val user: User = new User()
     val identity = new Identity()
-    identity.setProvider(FACEBOOK)
+    identity.setProvider(FACEBOOK.toString)
     identity.setFirstName("John")
     identity.setLastName("Doe")
-    identity.setProviderId("12345")
+    identity.setRemoteId("12345")
 
     ReflectionTestUtils.setField(user, "cookieValue", "abcde")
     ReflectionTestUtils.setField(user, "identity", identity)

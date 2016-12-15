@@ -22,23 +22,7 @@ class UserController @Autowired()(private val userRepository: UserRepository) {
   @RequestMapping(value = Array(""), method = Array(RequestMethod.GET))
   @ResponseBody
   def current(servletRequest: HttpServletRequest): User = {
-    val user = servletRequest.getAttribute(USER).asInstanceOf[User]
-    val principal = servletRequest.getUserPrincipal
-    if (principal != null) {
-      val oauth = principal.asInstanceOf[OAuth2Authentication]
-      val details = oauth.getUserAuthentication.getDetails.asInstanceOf[java.util.Map[String,Object]]
-      val link = details.get("link").asInstanceOf[String]
-
-      if (link contains "facebook.com") {
-        val identity = new Identity()
-        identity.setProvider(IdentityProvider.FACEBOOK)
-        identity.setFirstName(details.get("first-name").asInstanceOf[String])
-        identity.setLastName(details.get("last-name").asInstanceOf[String])
-        identity.setProviderId(details.get("id").asInstanceOf[String])
-        user.identity = identity
-      }
-    }
-    user
+      servletRequest.getAttribute(USER).asInstanceOf[User]
   }
 
   @RequestMapping(value = Array("accepts-cookies"), method = Array(RequestMethod.POST))

@@ -18,11 +18,11 @@ class User() {
 
   @BeanProperty
   @Indexed
-  @JsonProperty("cookie-value")
+  @JsonProperty("cookieValue")
   var cookieValue: String = _
 
   @BeanProperty
-  @JsonProperty("accepts-cookies")
+  @JsonProperty("acceptsCookies")
   var acceptsCookies: Boolean = _
 
   @DBRef

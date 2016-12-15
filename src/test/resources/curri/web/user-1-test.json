@@ -1,10 +1,10 @@
 {
-  "cookie-value": "abcde",
-  "accepts-cookies": false,
+  "cookieValue": "abcde",
+  "acceptsCookies": false,
   "identity": {
     "provider": "FACEBOOK",
-    "first-name": "John",
-    "last-name": "Doe",
+    "firstName": "John",
+    "lastName": "Doe",
     "id": "12345"
   }
 }

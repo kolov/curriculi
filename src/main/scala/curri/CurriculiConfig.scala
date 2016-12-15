@@ -1,7 +1,10 @@
 package curri
 
+import java.lang.Exception
+import java.util
 import javax.servlet.Filter
 
+import com.fasterxml.jackson.module.scala.DefaultScalaModule
 import curri.web.CookieFilter
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.SpringApplication
@@ -10,6 +13,9 @@ import org.springframework.boot.autoconfigure.{EnableAutoConfiguration, SpringBo
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.boot.web.servlet.FilterRegistrationBean
 import org.springframework.context.annotation.{Bean, ComponentScan, Configuration}
+import org.springframework.data.mongodb.MongoDbFactory
+import org.springframework.data.mongodb.core.convert.{CustomConversions, DefaultDbRefResolver, MappingMongoConverter}
+import org.springframework.data.mongodb.core.mapping.MongoMappingContext
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.{EnableWebSecurity, WebSecurityConfigurerAdapter}
 import org.springframework.security.oauth2.client.filter.OAuth2ClientAuthenticationProcessingFilter
@@ -76,14 +82,41 @@ class CurriculiConfig extends WebSecurityConfigurerAdapter {
     registration.setFilter(cookieFilter);
     registration.addUrlPatterns("/*");
     registration.setName("cookieFilter");
-    registration.setOrder(1);
+    // order is lowest precedence by default
     return registration;
   }
 
+  @Autowired
+  var mongoFactory: MongoDbFactory = _
+
+  @Autowired
+  var mongoMappingContext: MongoMappingContext = _
+
+
+
+  @Bean
+  def mongoConverter(): MappingMongoConverter = {
+    val dbRefResolver = new DefaultDbRefResolver(mongoFactory)
+    val mongoConverter = new MappingMongoConverter(dbRefResolver, mongoMappingContext) {
+
+    }
+    // this is my customization
+    mongoConverter.setMapKeyDotReplacement("_");
+    val converters = new java.util.ArrayList()
+    val conversions = new CustomConversions(converters)
+
+    mongoConverter.setCustomConversions(conversions)
+    mongoConverter.afterPropertiesSet();
+
+    mongoConverter
+  }
+
+  @Bean
+  def scalaMapper = DefaultScalaModule
 }
 
 object CurriculiConfig extends App {
 
-    SpringApplication.run(classOf[CurriculiConfig]);
+  SpringApplication.run(classOf[CurriculiConfig]);
 
 }
