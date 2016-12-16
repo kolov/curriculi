@@ -3,7 +3,7 @@ package curri.domain
 import java.util.UUID
 import javax.persistence.{GeneratedValue, Id}
 
-import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.annotation.{JsonIgnore, JsonProperty}
 import org.springframework.data.mongodb.core.index.Indexed
 import org.springframework.data.mongodb.core.mapping.{DBRef, Document}
 
@@ -14,6 +14,7 @@ class User() {
 
   @Id
   @GeneratedValue
+  @JsonIgnore
   var id: String = _
 
   @BeanProperty

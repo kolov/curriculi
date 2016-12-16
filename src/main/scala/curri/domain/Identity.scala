@@ -15,6 +15,7 @@ class Identity {
 
   @Id
   @GeneratedValue
+  @JsonIgnore
   var id: String = _
 
   @BeanProperty

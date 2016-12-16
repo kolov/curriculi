@@ -86,30 +86,6 @@ class CurriculiConfig extends WebSecurityConfigurerAdapter {
     return registration;
   }
 
-  @Autowired
-  var mongoFactory: MongoDbFactory = _
-
-  @Autowired
-  var mongoMappingContext: MongoMappingContext = _
-
-
-
-  @Bean
-  def mongoConverter(): MappingMongoConverter = {
-    val dbRefResolver = new DefaultDbRefResolver(mongoFactory)
-    val mongoConverter = new MappingMongoConverter(dbRefResolver, mongoMappingContext) {
-
-    }
-    // this is my customization
-    mongoConverter.setMapKeyDotReplacement("_");
-    val converters = new java.util.ArrayList()
-    val conversions = new CustomConversions(converters)
-
-    mongoConverter.setCustomConversions(conversions)
-    mongoConverter.afterPropertiesSet();
-
-    mongoConverter
-  }
 
   @Bean
   def scalaMapper = DefaultScalaModule

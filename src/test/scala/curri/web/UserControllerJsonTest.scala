@@ -5,7 +5,7 @@ import com.fasterxml.jackson.module.scala.DefaultScalaModule
 import com.fasterxml.jackson.module.scala.experimental.ScalaObjectMapper
 import curri.identity.Codes._
 import curri.domain.{Identity, User}
-import curri.service.UserRepository
+import curri.service.{IdentityRepository, UserRepository}
 import org.assertj.core.api.Assertions
 import org.junit.runner.RunWith
 import org.junit.{Before, Test}
@@ -34,6 +34,8 @@ class UserControllerJsonTest {
   //normally created by spring-data, needed to initialize context
   @MockBean
   var userRepo: UserRepository = _
+  @MockBean
+  var identotyRepo: IdentityRepository = _
 
 
   @Test
@@ -48,6 +50,8 @@ class UserControllerJsonTest {
 
     ReflectionTestUtils.setField(user, "cookieValue", "abcde")
     ReflectionTestUtils.setField(user, "identity", identity)
+
+   System.out.println (json.write(user))
 
     Assertions.assertThat(json.write(user)).isEqualToJson("user-1-test.json")
 

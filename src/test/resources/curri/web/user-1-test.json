@@ -4,7 +4,6 @@
   "identity": {
     "provider": "FACEBOOK",
     "firstName": "John",
-    "lastName": "Doe",
-    "id": "12345"
+    "lastName": "Doe"
   }
 }
