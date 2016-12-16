@@ -45,7 +45,7 @@ class CookieFilter @Autowired()(private val userRepository: UserRepository,
     def getNonEmptyCookies: Array[Cookie] = {
       var cookies: Array[Cookie] =
         request.asInstanceOf[HttpServletRequest].getCookies
-      if (cookies != null) {
+      if (cookies == null) {
         cookies = new Array[Cookie](0)
       }
       cookies

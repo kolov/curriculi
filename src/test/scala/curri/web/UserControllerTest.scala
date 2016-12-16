@@ -1,6 +1,6 @@
 package curri.web
 
-import curri.service.UserRepository
+import curri.service.{IdentityRepository, UserRepository}
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
@@ -27,6 +27,9 @@ class UserControllerTest {
 
   @MockBean
   var userService: UserRepository = _
+
+  @MockBean
+  var identityRepository: IdentityRepository = _
 
   @Test
   def exampleTest(): Unit = {
