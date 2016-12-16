@@ -53,34 +53,33 @@ class CookieFilter @Autowired()(private val userRepository: UserRepository,
 
     val cookies: Array[Cookie] = getNonEmptyCookies
 
-    val user = cookies.find(_.getName.equals(COOKIE_NAME))
-      .map(_.getValue).map(v => userRepository.findByCookieValue(v))
-      .getOrElse(createUser())
+    var user = cookies.find(_.getName.equals(COOKIE_NAME))
+      .map(cookie => cookie.getValue)
+      .map(v => userRepository.findByCookieValue(v))
+      .orNull
 
-    setCookieInResponse(response, user)
+    if (user == null) {
+      user = createUser()
+    }
 
     request.setAttribute("USER", user)
 
+    val principal = request.asInstanceOf[HttpServletRequest].getUserPrincipal
     if (user.getIdentity == null) {
-      val principal = request.asInstanceOf[HttpServletRequest].getUserPrincipal
       if (principal != null) {
         linkIdentityToUser(user, principal)
       }
+    } else {
+      if (principal == null) {
+        user.wipe
+        userRepository.save(user)
+      }
     }
 
-    if (isLogout(request)) {
-      user.wipe
-      userRepository.save(user)
-    }
-
+    setCookieInResponse(response, user)
 
     chain.doFilter(request, response)
 
-  }
-
-  def isLogout(request: ServletRequest): Boolean = {
-    val pathInfo: String = request.asInstanceOf[HttpServletRequest].getPathInfo
-    pathInfo != null && pathInfo.contains("/logout")
   }
 
   def setCookieInResponse(response: ServletResponse, user: User): Unit = {
