@@ -1,6 +1,7 @@
 package curri.web
 
 import java.io.IOException
+import java.security.Principal
 import javax.servlet._
 import javax.servlet.http.{Cookie, HttpServletRequest, HttpServletResponse}
 
@@ -30,59 +31,83 @@ class CookieFilter @Autowired()(private val userRepository: UserRepository,
   }
 
 
+  def createUser(): User = {
+    val user = new User()
+    user.wipe
+    userRepository.save(user)
+    user
+  }
+
   @throws[IOException]
   @throws[ServletException]
   def doFilter(request: ServletRequest, response: ServletResponse, chain: FilterChain): Unit = {
-    val cookies: Array[Cookie] =
-      request.asInstanceOf[HttpServletRequest].getCookies
 
-    var cookieValue: Option[String] = None
-    if (cookies != null) {
-      cookieValue = cookies.find(_.getName.equals(COOKIE_NAME)).map(_.getValue)
+    def getNonEmptyCookies: Array[Cookie] = {
+      var cookies: Array[Cookie] =
+        request.asInstanceOf[HttpServletRequest].getCookies
+      if (cookies != null) {
+        cookies = new Array[Cookie](0)
+      }
+      cookies
     }
 
-    var user: User = null
-    if (cookieValue.isDefined) {
-      user = userRepository.findByCookieValue(cookieValue.get)
-    }
+    val cookies: Array[Cookie] = getNonEmptyCookies
 
-    if (user == null) {
-      user = new User()
-      user.newUser
-      userRepository.save(user)
+    val user = cookies.find(_.getName.equals(COOKIE_NAME))
+      .map(_.getValue).map(v => userRepository.findByCookieValue(v))
+      .getOrElse(createUser())
 
-      val cookie: Cookie = new Cookie(COOKIE_NAME, user.getCookieValue)
-      cookie.setMaxAge(COOKIE_AGE)
-      cookie.setPath("/")
-      response.asInstanceOf[HttpServletResponse].addCookie(cookie)
-    }
+    setCookieInResponse(response, user)
+
     request.setAttribute("USER", user)
 
     if (user.getIdentity == null) {
       val principal = request.asInstanceOf[HttpServletRequest].getUserPrincipal
       if (principal != null) {
-        val oauth = principal.asInstanceOf[OAuth2Authentication]
-        val identity = providers.getProviders()
-          .find(_.canHandle(oauth))
-          .map(_.createIdentity(oauth))
-          .getOrElse(null)
-
-        if (identity != null) {
-          val existing = identityRepository.findByProviderCodeAndRemoteId(identity.providerCode, identity.remoteId)
-          if (existing == null) {
-            user.setIdentity(identityRepository.save(identity))
-          } else {
-            user.setIdentity(existing)
-          }
-          userRepository.save(user)
-        } else {
-          // log error
-        }
+        linkIdentityToUser(user, principal)
       }
+    }
+
+    if (isLogout(request)) {
+      user.wipe
+      userRepository.save(user)
     }
 
 
     chain.doFilter(request, response)
+
+  }
+
+  def isLogout(request: ServletRequest): Boolean = {
+    val pathInfo: String = request.asInstanceOf[HttpServletRequest].getPathInfo
+    pathInfo != null && pathInfo.contains("/logout")
+  }
+
+  def setCookieInResponse(response: ServletResponse, user: User): Unit = {
+    val cookie: Cookie = new Cookie(COOKIE_NAME, user.getCookieValue)
+    cookie.setMaxAge(COOKIE_AGE)
+    cookie.setPath("/")
+    response.asInstanceOf[HttpServletResponse].addCookie(cookie)
+  }
+
+  def linkIdentityToUser(user: User, principal: Principal): Any = {
+    val oauth = principal.asInstanceOf[OAuth2Authentication]
+    val identity = providers.getProviders()
+      .find(_.canHandle(oauth))
+      .map(_.createIdentity(oauth))
+      .getOrElse(null)
+
+    if (identity != null) {
+      val existing = identityRepository.findByProviderCodeAndRemoteId(identity.providerCode, identity.remoteId)
+      if (existing == null) {
+        user.setIdentity(identityRepository.save(identity))
+      } else {
+        user.setIdentity(existing)
+      }
+      userRepository.save(user)
+    } else {
+      LOG.error("Could not process identity " + oauth)
+    }
 
   }
 

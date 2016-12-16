@@ -30,9 +30,10 @@ class User() {
   @JsonProperty("identity")
   var identity: Identity = _
 
-  def newUser = {
+  def wipe = {
     cookieValue = UUID.randomUUID().toString
     acceptsCookies = false
+    identity = null
   }
 
 }
