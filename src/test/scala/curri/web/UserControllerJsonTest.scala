@@ -3,7 +3,7 @@ package curri.web
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.scala.DefaultScalaModule
 import com.fasterxml.jackson.module.scala.experimental.ScalaObjectMapper
-import curri.domain.IdentityProvider._
+import curri.identity.Codes._
 import curri.domain.{Identity, User}
 import curri.service.UserRepository
 import org.assertj.core.api.Assertions
@@ -41,7 +41,7 @@ class UserControllerJsonTest {
 
     val user: User = new User()
     val identity = new Identity()
-    identity.setProvider(FACEBOOK.toString)
+    identity.setProviderCode(FACEBOOK.toString)
     identity.setFirstName("John")
     identity.setLastName("Doe")
     identity.setRemoteId("12345")

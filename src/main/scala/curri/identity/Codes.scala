@@ -1,11 +1,11 @@
-package curri.domain
+package curri.identity
 
 import com.fasterxml.jackson.core.`type`.TypeReference
 
-object IdentityProvider extends Enumeration {
+object Codes extends Enumeration {
   type IdentityProvider = Value
   val FACEBOOK = Value("FACEBOOK")
   val GOOGLE = Value("GOOGLE")
 }
 
-class IdentityProviderType extends TypeReference[IdentityProvider.type]
+class IdentityCodesType extends TypeReference[Codes.type]

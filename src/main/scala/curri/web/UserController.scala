@@ -2,7 +2,7 @@ package curri.web
 
 import javax.servlet.http.HttpServletRequest
 
-import curri.domain.{Identity, IdentityProvider, User}
+import curri.domain.{Identity, User}
 import curri.service.UserRepository
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired

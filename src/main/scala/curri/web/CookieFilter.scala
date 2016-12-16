@@ -4,7 +4,8 @@ import java.io.IOException
 import javax.servlet._
 import javax.servlet.http.{Cookie, HttpServletRequest, HttpServletResponse}
 
-import curri.domain.{Identity, IdentityProvider, User}
+import curri.domain.{Identity, User}
+import curri.identity.{AllProviders, Codes}
 import curri.service.{IdentityRepository, UserRepository}
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -19,6 +20,10 @@ class CookieFilter @Autowired()(private val userRepository: UserRepository,
 
   val COOKIE_NAME: String = "curri"
   val COOKIE_AGE: Int = 30 * 24 * 60 * 60 // 30 days
+
+  @Autowired
+  var providers: AllProviders = _
+
 
   @throws[ServletException]
   def init(filterConfig: FilterConfig) {
@@ -43,7 +48,13 @@ class CookieFilter @Autowired()(private val userRepository: UserRepository,
 
     if (user == null) {
       user = new User()
+      user.newUser
       userRepository.save(user)
+
+      val cookie: Cookie = new Cookie(COOKIE_NAME, user.getCookieValue)
+      cookie.setMaxAge(COOKIE_AGE)
+      cookie.setPath("/")
+      response.asInstanceOf[HttpServletResponse].addCookie(cookie)
     }
     request.setAttribute("USER", user)
 
@@ -51,29 +62,25 @@ class CookieFilter @Autowired()(private val userRepository: UserRepository,
       val principal = request.asInstanceOf[HttpServletRequest].getUserPrincipal
       if (principal != null) {
         val oauth = principal.asInstanceOf[OAuth2Authentication]
-        val details = oauth.getUserAuthentication.getDetails.asInstanceOf[java.util.Map[String, Object]]
-        val link = details.get("link").asInstanceOf[String]
+        val identity = providers.getProviders()
+          .find(_.canHandle(oauth))
+          .map(_.createIdentity(oauth))
+          .getOrElse(null)
 
-        if (link contains "facebook.com") {
-          val identity = new Identity()
-          identity.setProvider(IdentityProvider.FACEBOOK.toString)
-          identity.setFirstName(details.get("first-name").asInstanceOf[String])
-          identity.setLastName(details.get("last-name").asInstanceOf[String])
-          identity.setRemoteId(details.get("id").asInstanceOf[String])
-          user.identity = identity
+        if (identity != null) {
+          val existing = identityRepository.findByProviderCodeAndRemoteId(identity.providerCode, identity.remoteId)
+          if (existing == null) {
+            user.setIdentity(identityRepository.save(identity))
+          } else {
+            user.setIdentity(existing)
+          }
+          userRepository.save(user)
+        } else {
+          // log error
         }
-
-      }
-      if (user.identity != null) {
-        identityRepository.save(user.identity)
-        userRepository.save(user)
       }
     }
 
-    val cookie: Cookie = new Cookie(COOKIE_NAME, user.getCookieValue)
-    cookie.setMaxAge(COOKIE_AGE)
-    cookie.setPath("/")
-    response.asInstanceOf[HttpServletResponse].addCookie(cookie)
 
     chain.doFilter(request, response)
 
