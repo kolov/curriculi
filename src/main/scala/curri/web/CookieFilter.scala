@@ -5,8 +5,8 @@ import java.security.Principal
 import javax.servlet._
 import javax.servlet.http.{Cookie, HttpServletRequest, HttpServletResponse}
 
-import curri.domain.{Identity, User}
-import curri.identity.{AllProviders, Codes}
+import curri.domain.User
+import curri.identity.AllProviders
 import curri.service.{IdentityRepository, UserRepository}
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired

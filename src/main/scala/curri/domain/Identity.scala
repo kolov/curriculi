@@ -42,6 +42,13 @@ class Identity {
   var link: String = _
 
   @BeanProperty
+  var picture: String = _
+
+  @BeanProperty
+  @JsonIgnore
+  var gender: String = _
+
+  @BeanProperty
   @JsonIgnore
   var remoteId: String = _
 

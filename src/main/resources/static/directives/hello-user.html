@@ -23,7 +23,8 @@
                     <i class="fa fa-facebook"></i> Sign in
                 </a>
             </div>
-            <form action="/login/facebook" method="GET" id="login-form-facebook"/>
+            <form action="/login/facebook" method="GET" id="login-form-facebook">
+            </form>
 
 
             <div class="header-item" style="width: 10em;">
@@ -31,9 +32,7 @@
                     <i class="fa fa-google-plus"></i> Sign in
                 </a>
             </div>
-            <form id="login-form-google" action="/login/google" method="POST">
-                <input type="hidden" name="identifier"
-                       value="https://accounts.google.com/o/oauth2/auth?response_type=token&scope=https://www.googleapis.com/auth/userinfo.email&redirect_uri=http://localhost:3000/oauth2callback&client_id=704952866510-2jmnll0l77mc14dj08hv4r9mk68g7aqd.apps.googleusercontent.com"/>
+            <form action="/login/google" method="GET" id="login-form-google">
             </form>
         </div>
 

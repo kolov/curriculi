@@ -45,7 +45,8 @@ class CurriculiConfig extends WebSecurityConfigurerAdapter {
 
       .and()
       .antMatcher("/**")
-      .addFilterBefore(ssoFilter, classOf[BasicAuthenticationFilter])
+      .addFilterBefore(ssoGoogleFilter, classOf[BasicAuthenticationFilter])
+      .addFilterBefore(ssoFacebookFilter, classOf[BasicAuthenticationFilter])
       .authorizeRequests()
       .antMatchers("/login/*")
       .authenticated()
@@ -54,7 +55,7 @@ class CurriculiConfig extends WebSecurityConfigurerAdapter {
 
   }
 
-  def ssoFilter: Filter = {
+  def ssoFacebookFilter: Filter = {
     val facebookFilter = new OAuth2ClientAuthenticationProcessingFilter("/login/facebook")
     val facebookTemplate = new OAuth2RestTemplate(facebook(), oauth2ClientContext);
     facebookFilter.setRestTemplate(facebookTemplate);
@@ -64,15 +65,37 @@ class CurriculiConfig extends WebSecurityConfigurerAdapter {
     return facebookFilter;
   }
 
+  def ssoGoogleFilter: Filter = {
+    val googleFilter = new OAuth2ClientAuthenticationProcessingFilter("/login/google")
+    val googleTemplate = new OAuth2RestTemplate(google(), oauth2ClientContext);
+    googleFilter.setRestTemplate(googleTemplate);
+    googleFilter.setTokenServices(
+      new UserInfoTokenServices(googleResource().getUserInfoUri(),
+        google().getClientId()));
+    return googleFilter;
+  }
+
   @Bean
-  @ConfigurationProperties("facebook.client")
+  @ConfigurationProperties("oauth2.facebook.client")
   def facebook(): AuthorizationCodeResourceDetails =
     new AuthorizationCodeResourceDetails();
 
 
   @Bean
-  @ConfigurationProperties("facebook.resource")
+  @ConfigurationProperties("oauth2.facebook.resource")
   def facebookResource(): ResourceServerProperties =
+    new ResourceServerProperties();
+
+
+  @Bean
+  @ConfigurationProperties("oauth2.google.client")
+  def google(): AuthorizationCodeResourceDetails =
+    new AuthorizationCodeResourceDetails();
+
+
+  @Bean
+  @ConfigurationProperties("oauth2.google.resource")
+  def googleResource(): ResourceServerProperties =
     new ResourceServerProperties();
 
 
