@@ -1,7 +1,5 @@
 package curri
 
-import java.lang.Exception
-import java.util
 import javax.servlet.Filter
 
 import com.fasterxml.jackson.module.scala.DefaultScalaModule
@@ -12,16 +10,15 @@ import org.springframework.boot.autoconfigure.security.oauth2.resource.{Resource
 import org.springframework.boot.autoconfigure.{EnableAutoConfiguration, SpringBootApplication}
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.boot.web.servlet.FilterRegistrationBean
-import org.springframework.context.annotation.{Bean, ComponentScan, Configuration}
-import org.springframework.data.mongodb.MongoDbFactory
-import org.springframework.data.mongodb.core.convert.{CustomConversions, DefaultDbRefResolver, MappingMongoConverter}
-import org.springframework.data.mongodb.core.mapping.MongoMappingContext
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient
+import org.springframework.context.annotation.{Bean, ComponentScan, Configuration, PropertySource}
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.{EnableWebSecurity, WebSecurityConfigurerAdapter}
 import org.springframework.security.oauth2.client.filter.OAuth2ClientAuthenticationProcessingFilter
 import org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeResourceDetails
 import org.springframework.security.oauth2.client.{OAuth2ClientContext, OAuth2RestTemplate}
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client
+import org.springframework.security.oauth2.provider.OAuth2Authentication
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository
 
@@ -32,7 +29,6 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository
 @EnableWebSecurity
 @SpringBootApplication
 class CurriculiConfig extends WebSecurityConfigurerAdapter {
-
 
   @Autowired
   var oauth2ClientContext: OAuth2ClientContext = _
@@ -55,12 +51,23 @@ class CurriculiConfig extends WebSecurityConfigurerAdapter {
 
   }
 
+  class FacebookUserInfoTokenServices(userInfoEndpointUrl: String, clientId: String)
+    extends UserInfoTokenServices(userInfoEndpointUrl, clientId) {
+
+
+    override def loadAuthentication(accessToken: String): OAuth2Authentication = {
+      val auth = super.loadAuthentication(accessToken)
+      auth.getUserAuthentication.getDetails.asInstanceOf[java.util.Map[String, String]].put("oauthProvider", "facebook")
+      auth
+    }
+  }
+
   def ssoFacebookFilter: Filter = {
     val facebookFilter = new OAuth2ClientAuthenticationProcessingFilter("/login/facebook")
     val facebookTemplate = new OAuth2RestTemplate(facebook(), oauth2ClientContext);
     facebookFilter.setRestTemplate(facebookTemplate);
     facebookFilter.setTokenServices(
-      new UserInfoTokenServices(facebookResource().getUserInfoUri(),
+      new FacebookUserInfoTokenServices(facebookResource().getUserInfoUri(),
         facebook().getClientId()));
     return facebookFilter;
   }

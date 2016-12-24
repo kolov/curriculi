@@ -11,9 +11,9 @@ import org.springframework.stereotype.Component
 class FacebookProvider extends Provider {
   override def canHandle(oauth: OAuth2Authentication): Boolean = {
     val details = oauth.getUserAuthentication.getDetails.asInstanceOf[java.util.Map[String, Object]]
-    val link = details.get("link").asInstanceOf[String]
+    val link = details.get("oauthProvider").asInstanceOf[String]
 
-    link != null && link.contains("facebook.com")
+    link != null && link.contains("facebook")
   }
 
   override def createIdentity(oauth: OAuth2Authentication): Identity = {

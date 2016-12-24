@@ -1,0 +1,29 @@
+version: '2'
+services:
+  curriculi:
+    image: kolov/curriculi
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mongodb
+      - initzookeeper
+    environment:
+      SPRING_DATA_MONGODB_URI: mongodb://mongodb:27017/curri
+      ZOOKEEPER_CONNECTSTRING: zookeeper:2181
+      SPRING_CLOUD_ZOOKEEPER_CONNECT-STRING: zookeeper:2181
+      LOGGING_LEVEL_ORG_THYMELEAF: trace
+  mongodb:
+    image: "mongo:3.4.0"
+    expose:
+      - "27017"
+  zookeeper:
+    image: "jplock/zookeeper"
+    expose:
+      - "2181"
+      - "2888"
+      - "3888"
+  initzookeeper:
+    image: "kolov/zoocurri"
+    depends_on:
+      - zookeeper
+

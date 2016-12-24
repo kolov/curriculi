@@ -25,7 +25,7 @@ class DemoController() {
   @ResponseBody
   def showFoo(): String = "foo=" + foo + "\n"
 
-  @RequestMapping(value = Array("/test"), method = Array(RequestMethod.GET))
+  @RequestMapping(value = Array("/required"), method = Array(RequestMethod.GET))
   @ResponseBody
   def resolve(): String = propertyResolver.getRequiredProperty("foo")
 
