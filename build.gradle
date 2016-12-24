@@ -133,6 +133,7 @@ task dockerCurri(type: Docker) {
         }
     }
 }
+
 task dockerInitZoo(type: Docker) {
     push = false
     applicationName = 'zoocurri'
@@ -143,4 +144,8 @@ task dockerInitZoo(type: Docker) {
             into stageDir
         }
     }
+}
+
+task buildAll() {
+    dependsOn build, dockerInitZoo, dockerCurri
 }
