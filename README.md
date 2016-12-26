@@ -13,8 +13,9 @@ mongod
 
 ### Docker Compose
 
-docker-compose -f src/main/docker/docker-compose.yml up
-http://curri.192.168.99.100.xip.io:8080/index
+    ./gradlew buildCompose -Penv=compose
+    docker-compose -f src/main/docker/docker-compose.yml up
+    http://curri.192.168.99.100.xip.io:8080/index
 
 
 ## Cloud Foundry

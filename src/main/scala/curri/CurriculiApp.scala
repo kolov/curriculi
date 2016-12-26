@@ -4,14 +4,15 @@ import javax.servlet.Filter
 
 import com.fasterxml.jackson.module.scala.DefaultScalaModule
 import curri.web.CookieFilter
-import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.{Autowired, Value}
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.security.oauth2.resource.{ResourceServerProperties, UserInfoTokenServices}
 import org.springframework.boot.autoconfigure.{EnableAutoConfiguration, SpringBootApplication}
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.boot.web.servlet.FilterRegistrationBean
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient
-import org.springframework.context.annotation.{Bean, ComponentScan, Configuration, PropertySource}
+import org.springframework.context.annotation._
+import org.springframework.data.jpa.domain.AbstractAuditable_
+import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.{EnableWebSecurity, WebSecurityConfigurerAdapter}
 import org.springframework.security.oauth2.client.filter.OAuth2ClientAuthenticationProcessingFilter
@@ -21,6 +22,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.provider.OAuth2Authentication
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository
+import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession
 
 @Configuration
 @EnableAutoConfiguration
@@ -28,7 +30,9 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository
 @EnableOAuth2Client
 @EnableWebSecurity
 @SpringBootApplication
-class CurriculiConfig extends WebSecurityConfigurerAdapter {
+@EnableRedisHttpSession
+@PropertySource(value = Array("classpath:/env.properties"), ignoreResourceNotFound = true)
+class CurriculiApp extends WebSecurityConfigurerAdapter {
 
   @Autowired
   var oauth2ClientContext: OAuth2ClientContext = _
@@ -119,10 +123,17 @@ class CurriculiConfig extends WebSecurityConfigurerAdapter {
 
   @Bean
   def scalaMapper = DefaultScalaModule
+
+  @Value("${redis.host:localhost}")
+  private var redisHost: String = _
+
+  @Bean
+  def connectionFactoryDocker = new LettuceConnectionFactory(redisHost, 6379);
+
 }
 
-object CurriculiConfig extends App {
+object CurriculiApp extends App {
 
-  SpringApplication.run(classOf[CurriculiConfig]);
+  SpringApplication.run(classOf[CurriculiApp]);
 
 }
