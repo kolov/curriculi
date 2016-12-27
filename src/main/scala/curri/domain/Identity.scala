@@ -1,6 +1,5 @@
 package curri.domain
 
-import java.beans.Transient
 import javax.persistence.{GeneratedValue, Id}
 
 import com.fasterxml.jackson.annotation.{JsonIgnore, JsonProperty}
@@ -11,7 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Document
 import scala.beans.BeanProperty
 
 @Document
-class Identity {
+class Identity extends Serializable {
 
   @Id
   @GeneratedValue

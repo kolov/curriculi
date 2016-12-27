@@ -19,7 +19,10 @@ class DemoController() {
   val USER: String = "USER"
 
   @Value("${foo:'Not Found'}")
-  var foo: String = ""
+  var foo: String = _
+//
+//  @Value("${oauth2.google.client.clientSecret}")
+//  var clientSecret: String = _
 
   @RequestMapping(method = Array(RequestMethod.GET))
   @ResponseBody

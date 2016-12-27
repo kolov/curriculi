@@ -19,8 +19,6 @@ class CookieFilter @Autowired()(private val userRepository: UserRepository,
 
   val LOG = LoggerFactory.getLogger(getClass)
 
-  val COOKIE_NAME: String = "curri"
-  val COOKIE_AGE: Int = 30 * 24 * 60 * 60 // 30 days
 
   @Autowired
   var providers: AllProviders = _
@@ -38,31 +36,34 @@ class CookieFilter @Autowired()(private val userRepository: UserRepository,
     user
   }
 
+  def curriCookie(request: HttpServletRequest): Option[String] = {
+    val cookies: Array[Cookie] = request.asInstanceOf[HttpServletRequest].getCookies
+    if (cookies != null) {
+      cookies.find(_.getName.equals(CookieFilter.COOKIE_NAME))
+        .map(cookie => cookie.getValue).orElse(None)
+    } else {
+      None
+    }
+  }
+
   @throws[IOException]
   @throws[ServletException]
-  def doFilter(request: ServletRequest, response: ServletResponse, chain: FilterChain): Unit = {
+  def doFilter(req: ServletRequest, response: ServletResponse, chain: FilterChain): Unit = {
 
-    def getNonEmptyCookies: Array[Cookie] = {
-      var cookies: Array[Cookie] =
-        request.asInstanceOf[HttpServletRequest].getCookies
-      if (cookies == null) {
-        cookies = new Array[Cookie](0)
-      }
-      cookies
+    val request: HttpServletRequest = req.asInstanceOf[HttpServletRequest]
+    val reqCookie: Option[String] = curriCookie(request)
+    var user: User = request.getSession(true).getAttribute(CookieFilter.ATTR_USER_NAME).asInstanceOf[User]
+
+    if (user == null && reqCookie.isDefined) {
+      user = userRepository.findByCookieValue(reqCookie.get)
     }
-
-    val cookies: Array[Cookie] = getNonEmptyCookies
-
-    var user = cookies.find(_.getName.equals(COOKIE_NAME))
-      .map(cookie => cookie.getValue)
-      .map(v => userRepository.findByCookieValue(v))
-      .orNull
 
     if (user == null) {
       user = createUser()
     }
 
-    request.setAttribute("USER", user)
+    request.setAttribute(CookieFilter.ATTR_USER_NAME, user)
+    request.getSession().setAttribute(CookieFilter.ATTR_USER_NAME, user)
 
     val principal = request.asInstanceOf[HttpServletRequest].getUserPrincipal
     if (user.getIdentity == null) {
@@ -83,8 +84,8 @@ class CookieFilter @Autowired()(private val userRepository: UserRepository,
   }
 
   def setCookieInResponse(response: ServletResponse, user: User): Unit = {
-    val cookie: Cookie = new Cookie(COOKIE_NAME, user.getCookieValue)
-    cookie.setMaxAge(COOKIE_AGE)
+    val cookie: Cookie = new Cookie(CookieFilter.COOKIE_NAME, user.getCookieValue)
+    cookie.setMaxAge(CookieFilter.COOKIE_AGE)
     cookie.setPath("/")
     response.asInstanceOf[HttpServletResponse].addCookie(cookie)
   }
@@ -112,4 +113,12 @@ class CookieFilter @Autowired()(private val userRepository: UserRepository,
 
   def destroy {
   }
+}
+
+object CookieFilter {
+  val COOKIE_NAME: String = "curri"
+  val COOKIE_AGE: Int = 30 * 24 * 60 * 60 // 30 days
+
+  val ATTR_USER_NAME = classOf[CookieFilter].getName + ".user"
+
 }

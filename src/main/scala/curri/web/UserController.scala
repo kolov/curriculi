@@ -16,19 +16,17 @@ class UserController @Autowired()(private val userRepository: UserRepository) {
 
   val LOG = LoggerFactory.getLogger(getClass)
 
-  val USER: String = "USER"
-
 
   @RequestMapping(value = Array(""), method = Array(RequestMethod.GET))
   @ResponseBody
   def current(servletRequest: HttpServletRequest): User = {
-      servletRequest.getAttribute(USER).asInstanceOf[User]
+      servletRequest.getAttribute(CookieFilter.ATTR_USER_NAME).asInstanceOf[User]
   }
 
   @RequestMapping(value = Array("accepts-cookies"), method = Array(RequestMethod.POST))
   @ResponseBody
   def acceptsCookies(servletRequest: HttpServletRequest): User = {
-    val user = servletRequest.getAttribute(USER).asInstanceOf[User]
+    val user = servletRequest.getAttribute(CookieFilter.ATTR_USER_NAME).asInstanceOf[User]
     user.setAcceptsCookies(true)
     userRepository.save(user)
     user

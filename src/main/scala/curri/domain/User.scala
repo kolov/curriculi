@@ -10,7 +10,7 @@ import org.springframework.data.mongodb.core.mapping.{DBRef, Document}
 import scala.beans.BeanProperty
 
 @Document
-class User() {
+class User() extends Serializable {
 
   @Id
   @GeneratedValue

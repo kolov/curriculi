@@ -11,7 +11,6 @@ import org.springframework.boot.autoconfigure.{EnableAutoConfiguration, SpringBo
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.boot.web.servlet.FilterRegistrationBean
 import org.springframework.context.annotation._
-import org.springframework.data.jpa.domain.AbstractAuditable_
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.{EnableWebSecurity, WebSecurityConfigurerAdapter}
@@ -42,7 +41,6 @@ class CurriculiApp extends WebSecurityConfigurerAdapter {
     http
       .logout().logoutSuccessUrl("/").permitAll()
       .and().csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-
       .and()
       .antMatcher("/**")
       .addFilterBefore(ssoGoogleFilter, classOf[BasicAuthenticationFilter])
@@ -111,7 +109,7 @@ class CurriculiApp extends WebSecurityConfigurerAdapter {
 
 
   @Bean
-  def someFilterRegistration(cookieFilter: CookieFilter): FilterRegistrationBean = {
+  def cookieFilterRegistration(cookieFilter: CookieFilter): FilterRegistrationBean = {
     val registration = new FilterRegistrationBean()
     registration.setFilter(cookieFilter);
     registration.addUrlPatterns("/*");
