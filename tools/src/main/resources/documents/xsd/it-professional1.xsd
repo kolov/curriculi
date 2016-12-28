@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://com.akolov/schema/cv/1.0"
+           xmlns:cv="http://com.akolov/schema/cv/1.0" elementFormDefault="qualified">
+    <xs:element name="cv">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="firstName" type="cv:nameType"/>
+                <xs:element name="secondName" type="cv:nameType"/>
+                <xs:element name="birthDate" type="xs:date"/>
+                <xs:element name="introduction" type="xs:string" minOccurs="1" maxOccurs="1"/>
+                <xs:element name="coreSkills">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="skillsline" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="skill" type="xs:string" maxOccurs="unbounded"/>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="educations">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="education" type="xs:string" maxOccurs="unbounded"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="trainings">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="training" type="xs:string" maxOccurs="unbounded"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="certifications">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="certification" type="xs:string" maxOccurs="unbounded"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="languages">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="language" type="xs:string" maxOccurs="unbounded"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="positions">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="position" type="cv:position" maxOccurs="unbounded"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:complexType name="position">
+        <xs:sequence>
+            <xs:element name="positionhead">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="customer" type="xs:string"/>
+                        <xs:element name="startDate" type="xs:date"/>
+                        <xs:element name="endDate" type="xs:date"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+
+
+            <xs:element name="description" type="xs:string"/>
+            <xs:element name="role" type="xs:string"/>
+            <xs:element name="techniques">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="technique" type="xs:string" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:simpleType name="nameType">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[a-zA-z ]{1,50}"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="sexType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="M"/>
+            <xs:enumeration value="F"/>
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>

@@ -1,15 +1,19 @@
 package curri.tools
 
-import org.springframework.boot.SpringApplication
+import org.springframework.boot.{ApplicationArguments, ApplicationRunner, SpringApplication}
 import org.springframework.boot.autoconfigure.{EnableAutoConfiguration, SpringBootApplication}
-import org.springframework.context.annotation.{ComponentScan, Configuration}
+import org.springframework.context.annotation.{Bean, ComponentScan, Configuration}
 
 
-@EnableAutoConfiguration
-@ComponentScan
 @SpringBootApplication
 class LoadInitialDocuments {
 
+  @Bean
+  def applicationRunner = new ApplicationRunner {
+    override def run(args: ApplicationArguments): Unit = {
+
+    }
+  }
 }
 
 object LoadInitialDocuments extends App {
