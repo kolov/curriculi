@@ -2,6 +2,12 @@ plugins {
     id 'com.craigburke.bower-installer' version '2.5.1'
 }
 
+apply plugin: 'scala'
+
+apply plugin: 'docker'
+apply plugin: 'spring-boot'
+apply plugin: 'io.spring.dependency-management'
+
 bower {
     installBase = 'bower/components/raw'
 
@@ -30,12 +36,8 @@ task bowerSyncJavascript(type: Sync) {
     dependsOn bowerInstall
 }
 
-apply plugin: 'java'
-apply plugin: 'scala'
 
-apply plugin: 'docker'
-apply plugin: 'spring-boot'
-apply plugin: 'io.spring.dependency-management'
+
 
 ext {
     sourceCompatibility = 1.8
@@ -116,10 +118,8 @@ task printResources {
 }
 build.dependsOn bowerSyncJavascript
 
-//used by docker tasks
-group = 'kolov'
 
-task dockerCurri(type: Docker) {
+task buildDocker(type: Docker) {
     push = false
     applicationName = 'curriculi'
     dockerfile = file('src/main/docker/curriculi/Dockerfile')
@@ -132,18 +132,6 @@ task dockerCurri(type: Docker) {
     }
 }
 
-task dockerInitZoo(type: Docker) {
-    push = false
-    applicationName = 'zoocurri'
-    dockerfile = file('src/main/docker/zookeeper/Dockerfile')
-    doFirst {
-        copy {
-            from 'secrets/init-zookeeper.sh'
-            into stageDir
-        }
-    }
-}
 
-task buildCompose() {
-    dependsOn build, dockerInitZoo, dockerCurri
-}
+
+

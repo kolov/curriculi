@@ -4,22 +4,8 @@ apply plugin: 'java'
 apply plugin: 'spring-boot'
 apply plugin: 'io.spring.dependency-management'
 
-repositories {
-    mavenCentral()
-    jcenter()
-}
-
-buildscript {
-    ext {
-        springBootVersion = '1.4.3.RELEASE'
-    }
 
 
-    dependencies {
-        classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
-        classpath 'se.transmode.gradle:gradle-docker:1.2'
-    }
-}
 
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-web")

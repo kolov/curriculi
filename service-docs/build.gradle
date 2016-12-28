@@ -1,6 +1,6 @@
 apply plugin: 'scala'
-apply plugin: 'java'
 
+apply plugin: 'docker'
 apply plugin: 'spring-boot'
 apply plugin: 'io.spring.dependency-management'
 
@@ -18,4 +18,17 @@ dependencies {
     testCompile("org.springframework.boot:spring-boot-starter-test")
     testCompile("junit:junit")
     testCompile("org.mockito:mockito-all:1.9.5")
+}
+
+task buildDocker(type: Docker) {
+    push = false
+    applicationName = 'service-docs'
+    dockerfile = file('src/main/docker/Dockerfile')
+
+    doFirst {
+        copy {
+            from jar
+            into stageDir
+        }
+    }
 }

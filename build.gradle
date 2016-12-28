@@ -1,8 +1,28 @@
-allprojects {
+apply plugin: 'docker'
+
+buildscript {
+
     ext {
         springBootVersion = '1.4.3.RELEASE'
     }
 
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+        classpath 'se.transmode.gradle:gradle-docker:1.2'
+    }
+}
+
+allprojects {
+
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
     repositories {
         mavenCentral()
         jcenter()
@@ -14,16 +34,32 @@ allprojects {
 
     apply plugin: 'idea'
 
-    buildscript {
 
-        repositories {
-            mavenCentral()
-            jcenter()
-        }
 
-        dependencies {
-            classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
-            classpath 'se.transmode.gradle:gradle-docker:1.2'
+
+    //group of docker images
+    group = 'kolov'
+
+
+}
+
+
+
+
+task buildZookeeperInitializerDocker(type: Docker) {
+    push = false
+    applicationName = 'zoocurri'
+    dockerfile = file('src/main/docker/zookeeper-initializer/Dockerfile')
+    doFirst {
+        copy {
+            from 'secrets/init-zookeeper.sh'
+            into stageDir
         }
     }
+}
+
+task buildImages() {
+    dependsOn buildZookeeperInitializerDocker,
+            ':app:buildDocker',
+            ':service-docs:buildDocker'
 }
