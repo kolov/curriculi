@@ -1,1 +1,1 @@
-include "tools", "app"
+include "tools", "app", "service-docs"

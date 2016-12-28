@@ -19,5 +19,4 @@ class Document {
   @JsonProperty
   var content: String = _
 
-
 }
