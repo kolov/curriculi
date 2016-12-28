@@ -1,0 +1,37 @@
+oauth2:
+  google:
+    client:
+#      clientId: from ZK
+#      clientSecret: from ZK
+      accessTokenUri: https://www.googleapis.com/oauth2/v4/token
+      userAuthorizationUri: https://accounts.google.com/o/oauth2/v2/auth
+      clientAuthenticationScheme: form
+      scope:
+        - openid
+        - email
+        - profile
+    resource:
+      userInfoUri: https://www.googleapis.com/oauth2/v3/userinfo
+      preferTokenInfo: true
+  facebook:
+    client:
+#      clientId: ${facebook.clientId}
+#      clientSecret: ${facebook.secret}
+      accessTokenUri: https://graph.facebook.com/oauth/access_token
+      userAuthorizationUri: https://www.facebook.com/dialog/oauth
+      tokenName: oauth_token
+      authenticationScheme: query
+      clientAuthenticationScheme: form
+    resource:
+      userInfoUri: https://graph.facebook.com/me
+
+# Mongo database URI. When set, host and port are ignored.
+spring:
+  data:
+    mongodb:
+      uri: mongodb://127.0.0.1:27017/curri
+      database: curri
+      name: curriculi
+# becaus of http://stackoverflow.com/questions/27249078/spring-boot-gives-templateinputexception-error-resolving-template-when-runnin
+  thymeleaf:
+      prefix: classpath:/templates

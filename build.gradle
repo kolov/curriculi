@@ -1,167 +1,33 @@
-buildscript {
+allprojects {
     ext {
         springBootVersion = '1.4.3.RELEASE'
     }
+
     repositories {
         mavenCentral()
         jcenter()
     }
 
-    dependencies {
-        classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
-        classpath 'se.transmode.gradle:gradle-docker:1.2'
+    task wrapper(type: Wrapper) {
+        gradleVersion = '2.9'
     }
-}
 
-plugins {
-    id 'com.craigburke.bower-installer' version '2.5.1'
-}
+    apply plugin: 'idea'
 
-bower {
-    installBase = 'bower/components/raw'
+    buildscript {
 
-    'angular'('1.2.9')
-    'bootstrap'('3.0.0')
-    'angular-ui-codemirror'('0.1.7')
-    'bootstrap-social'('latest')
-    'angular'('1.2.19')
-    'angular-route'('1.2.19')
-    'angular-resource'('1.2.19')
-    'angular-ui-router'('0.2.13')
-    'angular-bootstrap'('0.12.1')
-    'angular-sanitize'('1.2.19')
-    'angular-ui-switch'('0.1.0')
-    'angular-load'('0.2.0')
-    'underscore'('1.8.3')
-}
+        repositories {
+            mavenCentral()
+            jcenter()
+        }
 
-task bowerSyncJavascript(type: Sync) {
-    from 'bower/components/raw'
-    into "bower/components/synced/static/assets"
-    exclude '**/README.md'
-    exclude '**/angular*/index.js'
-    exclude '**/angular*/ng*.js'
-
-    dependsOn bowerInstall
-}
-
-apply plugin: 'java'
-apply plugin: 'scala'
-apply plugin: 'idea'
-
-apply plugin: 'docker'
-apply plugin: 'spring-boot'
-apply plugin: 'io.spring.dependency-management'
-
-ext {
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.8
-}
-
-
-jar {
-    baseName = 'curriculi'
-    version = '0.0.1-SNAPSHOT'
-}
-
-repositories {
-    mavenCentral()
-    maven { url "https://repo.spring.io/snapshot" }
-    maven { url "https://repo.spring.io/milestone" }
-    maven { url "https://repo.spring.io/libs-release" }
-}
-
-dependencies {
-    compile("org.springframework.boot:spring-boot-starter-web")
-    compile("org.springframework.cloud:spring-cloud-starter-config")
-    compile("org.springframework.session:spring-session:1.3.0.RELEASE")
-    compile("org.springframework.session:spring-session-data-redis:1.3.0.RELEASE")
-    compile("biz.paluch.redis:lettuce:3.5.0.Final")
-    compile("org.springframework.cloud:spring-cloud-zookeeper-config")
-    // why is this not included from zookeeper-config?
-    compile("org.apache.curator:curator-recipes:2.10.0")
-    compile("org.springframework.boot:spring-boot-starter-data-jpa")
-    compile("org.springframework.boot:spring-boot-starter-data-mongodb")
-    compile("org.springframework.boot:spring-boot-starter-actuator")
-    compile("org.springframework.boot:spring-boot-devtools")
-    compile("org.springframework.boot:spring-boot-starter-actuator")
-    compile("org.springframework.boot:spring-boot-starter-cloud-connectors")
-    compile("org.springframework.boot:spring-boot-starter-thymeleaf")
-    compile("org.springframework.boot:spring-boot-starter-security")
-    compile("org.springframework.security.oauth:spring-security-oauth2")
-
-    compile("org.hibernate:hibernate-validator")
-    compile("org.hsqldb:hsqldb")
-    compile("org.scala-lang:scala-library:2.11.7")
-    compile("org.webjars:bootstrap:3.1.1")
-    compile("com.fasterxml.jackson.module:jackson-module-scala_2.11:2.8.4")
-
-    testCompile("org.springframework.boot:spring-boot-starter-test")
-    testCompile("junit:junit")
-}
-
-dependencyManagement {
-    imports {
-        mavenBom 'org.springframework.cloud:spring-cloud-dependencies:Camden.RELEASE'
-        mavenBom 'org.springframework.cloud:spring-cloud-netflix:1.2.0.RELEASE'
-    }
-}
-
-
-
-task wrapper(type: Wrapper) {
-    gradleVersion = '2.9'
-}
-
-sourceSets {
-    main {
-        resources {
-            srcDir 'bower/components/synced'
-            def env = project.hasProperty('env')
-            if (env) {
-                srcDir "src/config/" + project.property('env')
-            }
+        dependencies {
+            classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+            classpath 'se.transmode.gradle:gradle-docker:1.2'
         }
     }
 }
 
+/*
 
-
-task printResources {
-    println "Printing sourceSets"
-    println sourceSets.main.resources.srcDirs
-
-}
-build.dependsOn bowerSyncJavascript
-
-//used by docker tasks
-group = 'kolov'
-
-task dockerCurri(type: Docker) {
-    push = false
-    applicationName = 'curriculi'
-    dockerfile = file('src/main/docker/curriculi/Dockerfile')
-
-    doFirst {
-        copy {
-            from jar
-            into stageDir
-        }
-    }
-}
-
-task dockerInitZoo(type: Docker) {
-    push = false
-    applicationName = 'zoocurri'
-    dockerfile = file('src/main/docker/zookeeper/Dockerfile')
-    doFirst {
-        copy {
-            from 'secrets/init-zookeeper.sh'
-            into stageDir
-        }
-    }
-}
-
-task buildCompose() {
-    dependsOn build, dockerInitZoo, dockerCurri
-}
+ */
