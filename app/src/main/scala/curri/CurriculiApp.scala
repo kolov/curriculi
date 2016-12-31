@@ -30,7 +30,6 @@ import org.springframework.session.data.redis.config.annotation.web.http.EnableR
 @EnableWebSecurity
 @SpringBootApplication
 @EnableRedisHttpSession
-@PropertySource(value = Array("classpath:/env.properties"), ignoreResourceNotFound = true)
 class CurriculiApp extends WebSecurityConfigurerAdapter {
 
   @Autowired

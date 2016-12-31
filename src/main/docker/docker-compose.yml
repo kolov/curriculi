@@ -29,4 +29,9 @@ services:
       - zookeeper
   redis:
     image: redis
+  service-docs:
+    image: "kolov/service-docs"
+    depends_on:
+          - mongodb
+          - initzookeeper
 

@@ -34,16 +34,10 @@ allprojects {
 
     apply plugin: 'idea'
 
-
-
-
     //group of docker images
     group = 'kolov'
 
-
 }
-
-
 
 
 task buildZookeeperInitializerDocker(type: Docker) {
@@ -52,8 +46,17 @@ task buildZookeeperInitializerDocker(type: Docker) {
     dockerfile = file('src/main/docker/zookeeper-initializer/Dockerfile')
     doFirst {
         copy {
-            from 'secrets/init-zookeeper.sh'
+            from 'secrets/init-zookeeper-secrets.sh'
             into stageDir
+        }
+        copy {
+            from 'src/main/docker/zookeeper-initializer/init-zookeeper-env.sh'
+            into stageDir
+        }
+        def output = new File("$stageDir/init-zookeeper.sh")
+        files("$stageDir/init-zookeeper-secrets.sh",
+                "$stageDir/init-zookeeper-env.sh").each {
+            f -> output << f.text
         }
     }
 }
