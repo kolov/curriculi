@@ -1,5 +1,5 @@
 FROM frolvlad/alpine-oraclejdk8:slim
-VOLUME /tmp
+
 ADD curriculi*.jar app.jar
 RUN sh -c 'touch /app.jar'
 ENV JAVA_OPTS=""

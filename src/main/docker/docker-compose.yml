@@ -6,32 +6,35 @@ services:
       - "8080:8080"
     depends_on:
       - mongodb
-      - initzookeeper
       - redis
+      - eureka
     environment:
       SPRING_DATA_MONGODB_URI: mongodb://mongodb:27017/curri
-      ZOOKEEPER_CONNECTSTRING: zookeeper:2181
-      SPRING_CLOUD_ZOOKEEPER_CONNECT-STRING: zookeeper:2181
+      SPRING_DATA_REDIS_HOST: redis
       LOGGING_LEVEL_ORG_THYMELEAF: trace
   mongodb:
     image: "mongo:3.4.0"
     expose:
       - "27017"
-  zookeeper:
-    image: "jplock/zookeeper"
-    expose:
-      - "2181"
-      - "2888"
-      - "3888"
-  initzookeeper:
-    image: "kolov/zoocurri"
-    depends_on:
-      - zookeeper
   redis:
     image: redis
+    expose:
+      - "6379"
   service-docs:
     image: "kolov/service-docs"
     depends_on:
           - mongodb
-          - initzookeeper
+          - eureka
+    environment:
+          SPRING_DATA_MONGODB_URI: mongodb://mongodb:27017/curri
+  eureka:
+    image: "netflixoss/eureka:1.3.1"
+    expose:
+          - "8080"
+    ports:
+          - "8081:8080"
+  config-server:
+    image: "kolov/curriculi-config-server"
+    ports:
+          - "8888:8888"
 

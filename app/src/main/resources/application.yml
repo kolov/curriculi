@@ -32,6 +32,17 @@ spring:
       uri: mongodb://127.0.0.1:27017/curri
       database: curri
       name: curriculi
+
 # becaus of http://stackoverflow.com/questions/27249078/spring-boot-gives-templateinputexception-error-resolving-template-when-runnin
   thymeleaf:
       prefix: classpath:/templates
+
+server:
+  port: ${PORT:8761}
+
+eureka:
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
+    server:
+      waitTimeInMsWhenSyncEmpty: 0

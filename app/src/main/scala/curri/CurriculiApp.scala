@@ -23,9 +23,7 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession
 
-@Configuration
-@EnableAutoConfiguration
-@ComponentScan
+
 @EnableOAuth2Client
 @EnableWebSecurity
 @SpringBootApplication
@@ -121,7 +119,7 @@ class CurriculiApp extends WebSecurityConfigurerAdapter {
   @Bean
   def scalaMapper = DefaultScalaModule
 
-  @Value("${redis.host:localhost}")
+  @Value("${spring.data.redis.host:localhost}")
   private var redisHost: String = _
 
   @Bean

@@ -1,14 +1,13 @@
 apply plugin: 'scala'
-
+apply plugin: 'org.springframework.boot'
 apply plugin: 'docker'
-apply plugin: 'spring-boot'
-apply plugin: 'io.spring.dependency-management'
 
 
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-web")
     compile("org.springframework.boot:spring-boot-starter-data-mongodb")
     compile("org.springframework.boot:spring-boot-devtools")
+//    compile("org.springframework.cloud:spring-cloud-starter-eureka")
 
     compile("org.hibernate:hibernate-validator")
     compile("org.scala-lang:scala-library:2.11.7")
