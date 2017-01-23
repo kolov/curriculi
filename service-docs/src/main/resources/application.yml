@@ -1,2 +1,14 @@
+spring:
+  application:
+    name: service-docs
+
 server:
     port: 8501
+
+eureka:
+  instance:
+      statusPageUrlPath: ${management.context-path}/info
+      healthCheckUrlPath: ${management.context-path}/health
+  client:
+    serviceUrl:
+      defaultZone: "${EUREKA_HOST:http://127.0.0.1:8080/eureka/}"

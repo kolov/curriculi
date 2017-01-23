@@ -2,12 +2,13 @@ package curri.web
 
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.{Autowired, Value}
+import org.springframework.cloud.client.discovery.DiscoveryClient
 import org.springframework.core.env.PropertyResolver
 import org.springframework.stereotype.Controller
-import org.springframework.web.bind.annotation.{RequestMapping, RequestMethod, ResponseBody}
+import org.springframework.web.bind.annotation.{PathVariable, RequestMapping, RequestMethod, ResponseBody}
 
 /**
-  *
+  * Stuf ot test
   */
 
 @Controller
@@ -20,9 +21,9 @@ class DemoController() {
 
   @Value("${foo:'Not Found'}")
   var foo: String = _
-//
-//  @Value("${oauth2.google.client.clientSecret}")
-//  var clientSecret: String = _
+  //
+  //  @Value("${oauth2.google.client.clientSecret}")
+  //  var clientSecret: String = _
 
   @RequestMapping(method = Array(RequestMethod.GET))
   @ResponseBody
@@ -35,5 +36,14 @@ class DemoController() {
 
   @Autowired
   var propertyResolver: PropertyResolver = null
+
+
+  @Autowired
+  var discoveryClient: DiscoveryClient = null
+
+  @RequestMapping(Array("/service-instances/{applicationName}"))
+  @ResponseBody
+  def serviceInstancesByApplicationName(@PathVariable applicationName: String) =
+    discoveryClient.getInstances(applicationName);
 
 }

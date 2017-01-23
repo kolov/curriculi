@@ -8,14 +8,13 @@ A Scala Spring Boot application, mostly exercising Scala. Features:
 
 ### From IDE 
 #### Start needed services on Mac OS
-	zkServer start
-	secrets/init-zookeeper.sh zkCli localhost:2181
+	docker run -d -p 8081:8080 netflixoss/eureka:1.3.1
 	mongod
 	
 Run CurriApp.main
 
 ### Docker Compose
 
-    ./gradlew buildCompose
+    ./gradlew build buildImages
     docker-compose -f src/main/docker/docker-compose.yml up
     Go to http://curri.xip.io:8080/index

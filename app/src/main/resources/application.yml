@@ -1,3 +1,6 @@
+server:
+  port: 8052
+
 oauth2:
   google:
     client:
