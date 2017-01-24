@@ -1,5 +1,7 @@
 apply plugin: 'docker'
 
+// Stick to Camden.RELEAS - https://spring.io/blog/2016/09/26/spring-cloud-camden-release-and-brixton-sr6-are-available
+
 buildscript {
 
     ext {
@@ -17,12 +19,10 @@ buildscript {
     dependencies {
         classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
         classpath 'se.transmode.gradle:gradle-docker:1.2'
-        classpath "io.spring.gradle:dependency-management-plugin:0.5.2.RELEASE"
+        classpath "io.spring.gradle:dependency-management-plugin:0.5.6.RELEASE"
      }
 
 }
-
-
 
 
 allprojects {
@@ -37,7 +37,7 @@ allprojects {
     dependencyManagement {
         imports {
             mavenBom 'org.springframework.cloud:spring-cloud-config:1.2.2.RELEASE'
-            mavenBom 'org.springframework.cloud:spring-cloud-dependencies:Brixton.SR5'
+            mavenBom "org.springframework.cloud:spring-cloud-dependencies:Camden.SR4"
         }
     }
 
@@ -77,5 +77,6 @@ allprojects {
 task buildImages() {
     dependsOn ':app:buildDocker',
             ':service-docs:buildDocker',
-            'config-server:buildDocker'
+            'config-server:buildDocker',
+            'eureka-server:buildDocker'
 }

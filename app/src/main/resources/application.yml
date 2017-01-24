@@ -1,11 +1,17 @@
 server:
-  port: 8052
+  port: 8080
+
+zuul:
+  routes:
+    docs:
+      path: /docs/**
+      serviceId: service-docs
 
 oauth2:
   google:
     client:
-#      clientId: from ZK
-#      clientSecret: from ZK
+#      clientId: from ConfigServer
+#      clientSecret: from ConfigServer
       accessTokenUri: https://www.googleapis.com/oauth2/v4/token
       userAuthorizationUri: https://accounts.google.com/o/oauth2/v2/auth
       clientAuthenticationScheme: form
@@ -18,8 +24,8 @@ oauth2:
       preferTokenInfo: true
   facebook:
     client:
-#      clientId: ${facebook.clientId}
-#      clientSecret: ${facebook.secret}
+#      clientId: ${facebook.clientId} from ConfigServer
+#      clientSecret: ${facebook.secret} from ConfigServer
       accessTokenUri: https://graph.facebook.com/oauth/access_token
       userAuthorizationUri: https://www.facebook.com/dialog/oauth
       tokenName: oauth_token
@@ -45,8 +51,8 @@ spring:
 eureka:
   client:
     serviceUrl:
-      defaultZone: "${EUREKA_HOST:http://localhost:8080/eureka/}"
+      defaultZone: "${EUREKA_HOST:http://localhost:8081/eureka/}"
     registerWithEureka: false
-    fetchRegistry: false
+    fetchRegistry: true
     server:
       waitTimeInMsWhenSyncEmpty: 0

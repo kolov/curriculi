@@ -1,11 +1,12 @@
 server:
-   port: 8888
+   port: 8081
 
-spring:
-  cloud:
-    config:
-      server:
-        git:
-          uri: https://gitlab.com/kolov/curriculi-config-repo.git
-          password: TIYiiQUASA9YGdMb
-          username: kolov-config-server
+
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+
+logging:
+  level:
+    com.netflix.eureka: TRACE

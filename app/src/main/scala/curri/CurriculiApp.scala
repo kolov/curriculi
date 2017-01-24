@@ -10,6 +10,7 @@ import org.springframework.boot.autoconfigure.security.oauth2.resource.{Resource
 import org.springframework.boot.autoconfigure.{EnableAutoConfiguration, SpringBootApplication}
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.boot.web.servlet.FilterRegistrationBean
+import org.springframework.cloud.netflix.zuul.EnableZuulProxy
 import org.springframework.context.annotation._
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -28,6 +29,7 @@ import org.springframework.session.data.redis.config.annotation.web.http.EnableR
 @EnableWebSecurity
 @SpringBootApplication
 @EnableRedisHttpSession
+@EnableZuulProxy
 class CurriculiApp extends WebSecurityConfigurerAdapter {
 
   @Autowired

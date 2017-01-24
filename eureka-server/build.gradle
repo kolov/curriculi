@@ -1,27 +1,18 @@
 apply plugin: 'scala'
 apply plugin: 'org.springframework.boot'
-apply plugin: 'docker'
-
-ext {
-  //  mainClassName='curri.cofig.ConfigServerApp'
-}
 
 dependencies {
     compile("org.springframework.boot:spring-boot-starter")
     compile("org.springframework.cloud:spring-cloud-starter-config")
-    compile("org.springframework.cloud:spring-cloud-config-server")
+    compile("org.springframework.cloud:spring-cloud-starter-eureka-server")
     compile("org.hibernate:hibernate-validator")
     compile("org.scala-lang:scala-library:2.11.7")
     compile("com.fasterxml.jackson.module:jackson-module-scala_2.11:2.8.4")
 }
 
-
-
-sourceSets {
-    main {
-        resources {
-            srcDirs "src/main/resources", "../secrets/config-server"
-        }
+dependencyManagement {
+    imports {
+        mavenBom 'org.springframework.cloud:spring-cloud-dependencies:Camden.RELEASE'
     }
 }
 
