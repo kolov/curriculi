@@ -1,8 +1,11 @@
 # curriculi
 
-A Scala Spring Boot application, mostly exercising Scala. Features:
+A Scala Spring Boot application, mostly exercising Scala and Spring Cloud. Features:
 - OAuth2 login, currently supports Facebook and Google
 - User data stored in MongoDB 
+- Spring Configuraton server backed up by Git
+- Service registration and discovery with Eureka
+- Edge service with Zuul
 
 ## Running locally
 
@@ -11,7 +14,8 @@ A Scala Spring Boot application, mostly exercising Scala. Features:
 	docker run -d -p 8081:8080 netflixoss/eureka:1.3.1
 	mongod
 	
-Run CurriApp.main
+	
+Run CurriApp.mainm and the services.
 
 ### Docker Compose
 
