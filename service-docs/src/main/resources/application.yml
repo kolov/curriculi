@@ -11,4 +11,4 @@ eureka:
       healthCheckUrlPath: ${management.context-path}/health
   client:
     serviceUrl:
-      defaultZone: "${EUREKA_HOST:http://127.0.0.1:8081/eureka/}"
+      defaultZone: "${EUREKA_HOST:http://localhost:8761/eureka/}"

@@ -12,7 +12,7 @@ class DocumentController @Autowired()(private val documentRepository: DocumentRe
 
   val LOG = LoggerFactory.getLogger(getClass)
 
-  @RequestMapping(Array("/hearbeat"))
+  @RequestMapping(Array("/heartbeat"))
   @ResponseBody
   def heartbeat(): String = "OK"
 

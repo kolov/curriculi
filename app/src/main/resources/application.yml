@@ -51,8 +51,10 @@ spring:
 eureka:
   client:
     serviceUrl:
-      defaultZone: "${EUREKA_HOST:http://localhost:8081/eureka/}"
+      defaultZone: "${EUREKA_HOST:http://localhost:8761/eureka/}"
     registerWithEureka: false
     fetchRegistry: true
-    server:
-      waitTimeInMsWhenSyncEmpty: 0
+  instance:
+      preferIpAddress: true
+  server:
+    waitTimeInMsWhenSyncEmpty: 0
