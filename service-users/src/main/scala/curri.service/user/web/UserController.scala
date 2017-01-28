@@ -1,11 +1,10 @@
 package curri.service.user.web
 
-import javax.servlet.http.HttpServletRequest
-
 import curri.service.user.domain.User
 import curri.service.user.persist.UserRepository
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.{HttpStatus, ResponseEntity}
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation._
 
@@ -17,8 +16,13 @@ class UserController @Autowired()(private val userRepository: UserRepository) {
 
   @RequestMapping(value = Array("/byCookie"), method = Array(RequestMethod.GET))
   @ResponseBody
-  def findByCookieValue(@RequestParam cookie: String): User = {
-    return userRepository.findByCookieValue(cookie)
+  def findByCookieValue(@RequestParam cookie: String) : Any = {
+    val user = userRepository.findByCookieValue(cookie)
+    if (user == null) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null)
+    } else {
+      user
+    }
   }
 
   @RequestMapping(value = Array("/registerUser"), method = Array(RequestMethod.POST))
@@ -28,11 +32,6 @@ class UserController @Autowired()(private val userRepository: UserRepository) {
     user
   }
 
-  @RequestMapping(value = Array(""), method = Array(RequestMethod.GET))
-  @ResponseBody
-  def current(servletRequest: HttpServletRequest): User = {
-    servletRequest.getAttribute("curriuser").asInstanceOf[User]
-  }
 
   @RequestMapping(value = Array("/accepts-cookies"), method = Array(RequestMethod.POST))
   @ResponseBody

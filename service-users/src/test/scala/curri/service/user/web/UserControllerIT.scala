@@ -31,8 +31,18 @@ class UserControllerIT {
   var identityRepository: IdentityRepository = _
 
   @Test
+  def byCookieBadParam(): Unit = {
+    mvc.perform(MockMvcRequestBuilders.get("/byCookie")
+      .accept(MediaType.APPLICATION_JSON)
+      .param("XXX", "123"))
+      .andExpect(MockMvcResultMatchers.status().is(400));
+  }
+
+  @Test
   def exampleTest(): Unit = {
-    mvc.perform(MockMvcRequestBuilders.get("/user").accept(MediaType.APPLICATION_JSON))
-      .andExpect(MockMvcResultMatchers.status().isOk());
+    mvc.perform(MockMvcRequestBuilders.get("/byCookie")
+      .accept(MediaType.APPLICATION_JSON)
+      .param("cookie", "123"))
+      .andExpect(MockMvcResultMatchers.status().is(404));
   }
 }
