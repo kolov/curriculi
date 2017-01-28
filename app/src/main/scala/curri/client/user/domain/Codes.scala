@@ -1,4 +1,4 @@
-package curri.oauth
+package curri.client.user.domain
 
 import com.fasterxml.jackson.core.`type`.TypeReference
 

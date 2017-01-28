@@ -11,6 +11,7 @@ import org.springframework.boot.autoconfigure.{EnableAutoConfiguration, SpringBo
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.boot.web.servlet.FilterRegistrationBean
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient
+import org.springframework.cloud.netflix.feign.EnableFeignClients
 import org.springframework.cloud.netflix.zuul.EnableZuulProxy
 import org.springframework.context.annotation._
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory
@@ -32,6 +33,7 @@ import org.springframework.session.data.redis.config.annotation.web.http.EnableR
 @EnableRedisHttpSession
 @EnableZuulProxy
 @EnableEurekaClient
+@EnableFeignClients
 class CurriculiApp extends WebSecurityConfigurerAdapter {
 
   @Autowired
@@ -113,7 +115,7 @@ class CurriculiApp extends WebSecurityConfigurerAdapter {
   def cookieFilterRegistration(cookieFilter: CookieFilter): FilterRegistrationBean = {
     val registration = new FilterRegistrationBean()
     registration.setFilter(cookieFilter);
-    registration.addUrlPatterns("/v1/*", "/login/*");
+    registration.addUrlPatterns("/v1/*", "/login/*", "/user/*");
     registration.setName("cookieFilter");
     // order is lowest precedence by default
     return registration;

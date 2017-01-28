@@ -1,10 +1,8 @@
-package curri.service.user.domain
-
-import org.springframework.data.annotation.Id
+package curri.client.user.domain
 
 import com.fasterxml.jackson.annotation.{JsonIgnore, JsonProperty}
 import com.fasterxml.jackson.module.scala.JsonScalaEnumeration
-import curri.oauth.IdentityCodesType
+import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
 
 import scala.beans.BeanProperty

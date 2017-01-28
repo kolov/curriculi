@@ -1,6 +1,6 @@
-package curri.oauth
+package curri.service.user.domain.oauth
 
-import curri.service.user.domain.Identity
+import curri.client.user.domain.Identity
 import org.springframework.security.oauth2.provider.OAuth2Authentication
 
 /**

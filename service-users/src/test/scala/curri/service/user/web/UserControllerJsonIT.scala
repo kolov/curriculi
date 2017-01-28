@@ -1,9 +1,9 @@
-package curri.web
+package curri.service.user.web
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.scala.DefaultScalaModule
 import com.fasterxml.jackson.module.scala.experimental.ScalaObjectMapper
-import curri.oauth.Codes._
+import curri.service.user.domain.oauth.Codes._
 import curri.service.user.domain.{Identity, User}
 import curri.service.user.persist.{IdentityRepository, UserRepository}
 import org.assertj.core.api.Assertions

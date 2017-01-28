@@ -1,1 +1,1 @@
-include "tools", "app", "service-docs", "config-server", "eureka-server"
+include "tools", "app", "service-docs", "service-users", "config-server", "eureka-server"

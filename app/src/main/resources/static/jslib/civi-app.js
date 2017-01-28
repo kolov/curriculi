@@ -163,7 +163,7 @@ civiModule.factory('usersService', ['$resource', function ($resource) {
 }]);
 
 civiModule.factory('acceptCookieService', ['$resource', function ($resource) {
-  return $resource('/v1/user/accepts-cookies', {},
+  return $resource('/user/accepts-cookies', {},
     {
       'accept': {method: 'POST'}
     });

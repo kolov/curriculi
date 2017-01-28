@@ -9,7 +9,7 @@ import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.{PathVariable, RequestMapping, RequestMethod, ResponseBody}
 
 /**
-  * Stuf ot test
+  * Stuff to test
   */
 
 @Controller

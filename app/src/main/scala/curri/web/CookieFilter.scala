@@ -5,17 +5,15 @@ import java.security.Principal
 import javax.servlet._
 import javax.servlet.http.{Cookie, HttpServletRequest, HttpServletResponse}
 
-import curri.service.user.domain.User
-import curri.oauth.AllProviders
-import curri.service.user.persist.{IdentityRepository, UserRepository}
+import curri.client.user.domain.{User, UsersClient}
+import curri.service.user.domain.oauth.AllProviders
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.oauth2.provider.OAuth2Authentication
 import org.springframework.stereotype.Component
 
 @Component
-class CookieFilter @Autowired()(private val userRepository: UserRepository,
-                                private val identityRepository: IdentityRepository) extends Filter {
+class CookieFilter @Autowired()(private val usersClient: UsersClient) extends Filter {
 
   val LOG = LoggerFactory.getLogger(getClass)
 
@@ -32,8 +30,8 @@ class CookieFilter @Autowired()(private val userRepository: UserRepository,
   def createUser(): User = {
     val user = new User()
     user.wipe
-    userRepository.save(user)
-    user
+    val registered = usersClient.registerUser(user)
+    registered
   }
 
   def curriCookie(request: HttpServletRequest): Option[String] = {
@@ -55,7 +53,7 @@ class CookieFilter @Autowired()(private val userRepository: UserRepository,
     var user: User = request.getSession(true).getAttribute(CookieFilter.ATTR_USER_NAME).asInstanceOf[User]
 
     if (user == null && reqCookie.isDefined) {
-      user = userRepository.findByCookieValue(reqCookie.get)
+      user = usersClient.findByCookieValue(reqCookie.get)
     }
 
     if (user == null) {
@@ -73,7 +71,7 @@ class CookieFilter @Autowired()(private val userRepository: UserRepository,
     } else {
       if (principal == null) {
         user.wipe
-        userRepository.save(user)
+        user = usersClient.registerUser(user)
       }
     }
 
@@ -98,13 +96,13 @@ class CookieFilter @Autowired()(private val userRepository: UserRepository,
       .getOrElse(null)
 
     if (identity != null) {
-      val existing = identityRepository.findByProviderCodeAndRemoteId(identity.providerCode, identity.remoteId)
+      val existing = usersClient.findByProviderCodeAndRemoteId(identity.providerCode, identity.remoteId)
       if (existing == null) {
-        user.setIdentity(identityRepository.save(identity))
+        user.setIdentity(usersClient.saveIdentity(identity))
       } else {
         user.setIdentity(existing)
       }
-      userRepository.save(user)
+      usersClient.registerUser(user)
     } else {
       LOG.error("Could not process identity " + oauth)
     }
@@ -119,6 +117,6 @@ object CookieFilter {
   val COOKIE_NAME: String = "curri"
   val COOKIE_AGE: Int = 30 * 24 * 60 * 60 // 30 days
 
-  val ATTR_USER_NAME = classOf[CookieFilter].getName + ".user"
+  val ATTR_USER_NAME = "curriuser"
 
 }
