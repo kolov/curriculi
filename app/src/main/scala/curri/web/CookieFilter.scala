@@ -5,10 +5,12 @@ import java.security.Principal
 import javax.servlet._
 import javax.servlet.http.{Cookie, HttpServletRequest, HttpServletResponse}
 
-import curri.client.user.domain.{User, UsersClient}
+import curri.NotFoundException
+import curri.client.user.domain.{Identity, User, UsersClient}
 import curri.service.user.domain.oauth.AllProviders
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.ResponseEntity
 import org.springframework.security.oauth2.provider.OAuth2Authentication
 import org.springframework.stereotype.Component
 
@@ -96,12 +98,14 @@ class CookieFilter @Autowired()(private val usersClient: UsersClient) extends Fi
       .getOrElse(null)
 
     if (identity != null) {
-      val existing = usersClient.findByProviderCodeAndRemoteId(identity.providerCode, identity.remoteId)
-      if (existing == null) {
+      try {
+        val existing: ResponseEntity[Identity]
+        = usersClient.findByProviderCodeAndRemoteId(identity.providerCode, identity.remoteId)
+        user.setIdentity(existing.getBody)
+      } catch (NotFoundException _) {
         user.setIdentity(usersClient.saveIdentity(identity))
-      } else {
-        user.setIdentity(existing)
       }
+
       usersClient.registerUser(user)
     } else {
       LOG.error("Could not process identity " + oauth)

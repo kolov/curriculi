@@ -3,7 +3,7 @@ spring:
     name: service-docs
 
 server:
-    port: 8501
+    port: 8502
 
 eureka:
   instance:

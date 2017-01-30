@@ -2,10 +2,12 @@
 
 A Scala Spring Boot application, mostly exercising Scala and Spring Cloud. Features:
 - OAuth2 login, currently supports Facebook and Google
-- User data stored in MongoDB 
 - Spring Configuraton server backed up by Git
 - Service registration and discovery with Eureka
+- Feign client
 - Edge service with Zuul
+- Microservice Documents - Mongodb
+- Microservice Users - Mongodb
 
 ## Running locally
 

@@ -156,14 +156,14 @@ civiModule.factory('currentService', ['$resource', function ($resource) {
 }]);
 
 civiModule.factory('usersService', ['$resource', function ($resource) {
-  return $resource('/v1//user', {},
+  return $resource('/v1/user', {},
     {
       'query': {isArray: false}
     });
 }]);
 
 civiModule.factory('acceptCookieService', ['$resource', function ($resource) {
-  return $resource('/user/accepts-cookies', {},
+  return $resource('/v1/user/accepts-cookies', {},
     {
       'accept': {method: 'POST'}
     });

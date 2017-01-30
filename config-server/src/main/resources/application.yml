@@ -1,0 +1,13 @@
+server:
+   port: 8888
+
+# Do NOT define git url/credentials here
+
+spring:
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://gitlab.com/kolov/curriculi-config-repo.git
+          password: ${GIT-PWD}
+          username: ${GIT_USER}

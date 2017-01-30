@@ -3,7 +3,9 @@ package curri
 import javax.servlet.Filter
 
 import com.fasterxml.jackson.module.scala.DefaultScalaModule
+import com.netflix.governator.annotations.binding.Response
 import curri.web.CookieFilter
+import feign.codec.ErrorDecoder
 import org.springframework.beans.factory.annotation.{Autowired, Value}
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.security.oauth2.resource.{ResourceServerProperties, UserInfoTokenServices}
