@@ -17,12 +17,13 @@ A Scala Spring Boot application, mostly exercising Scala and Spring Cloud. Featu
 	mongod
 	redis
 #### Start config server with credentials to Git server containing configurarion
-config-server has `../secrets/config-server` on its resources classpath. Place `application.yml` with the credentiials there.
+The config-server project has `../secrets/config-server` on its resources classpath. Place `application.yml` with a Git server url and credentiials there.
+#### Place OAuth secrets in Git
+Make `curriculi.yml` file containing Ouath2 secret ane place in the Git lication accessed by the config server.
 #### Start all services separately, then the web app
-Run the @SpringBootApplication main()
+Run the corresponding @SpringBootApplication main()
 
 ### Docker Compose
-
     ./gradlew build buildImages
     docker-compose -f src/main/docker/docker-compose.yml up
     Go to http://curri.xip.io:8080/index
