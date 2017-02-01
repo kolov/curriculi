@@ -6,7 +6,7 @@ A Scala Spring Boot application, mostly exercising Scala and Spring Cloud. Featu
 - Service registration and discovery with Eureka
 - Feign client
 - Edge service with Zuul
-- Microservice Documents - Mongodb
+- Microservice Documents - Mongodb (doesn't do a lot)
 - Microservice Users - Mongodb
 - session serialised in Redi
 
