@@ -8,14 +8,16 @@ A Scala Spring Boot application, mostly exercising Scala and Spring Cloud. Featu
 - Edge service with Zuul
 - Microservice Documents - Mongodb
 - Microservice Users - Mongodb
+- session serialesed in Redi
 
 ## Running locally
 
 ### From IDE 
 #### Start needed services on Mac OS
-	docker run -d -p 8081:8080 netflixoss/eureka:1.3.1
 	mongod
-	
+	redis
+#### `Start config server with credentials to Git server containing configurarion
+config-server has `../secrets/config-server` on its resources classpath. Place `application.yml` with the credentiials there.
 	
 Run CurriApp.mainm and the services.
 
