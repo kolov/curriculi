@@ -6,21 +6,24 @@ A Scala Spring Boot application, mostly exercising Scala and Spring Cloud. Featu
 - Service registration and discovery with Eureka
 - Feign client
 - Edge service with Zuul
-- Microservice Documents - Mongodb
+- Microservice Documents - Mongodb (doesn't do a lot)
 - Microservice Users - Mongodb
+- session serialised in Redi
 
 ## Running locally
 
 ### From IDE 
 #### Start needed services on Mac OS
-	docker run -d -p 8081:8080 netflixoss/eureka:1.3.1
 	mongod
-	
-	
-Run CurriApp.mainm and the services.
+	redis
+#### Start config server with credentials to Git server containing configurarion
+The config-server project has `../secrets/config-server` on its resources classpath. Place `application.yml` with a Git server url and credentiials there.
+#### Place OAuth secrets in Git
+Make `curriculi.yml` file containing Ouath2 secret ane place in the Git lication accessed by the config server.
+#### Start all services separately, then the web app
+Run the corresponding @SpringBootApplication main()
 
 ### Docker Compose
-
     ./gradlew build buildImages
     docker-compose -f src/main/docker/docker-compose.yml up
     Go to http://curri.xip.io:8080/index
