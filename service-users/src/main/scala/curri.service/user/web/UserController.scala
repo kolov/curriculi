@@ -1,5 +1,7 @@
 package curri.service.user.web
 
+import java.util.Optional
+
 import curri.service.user.domain.{Identity, User}
 import curri.service.user.persist.{IdentityRepository, UserRepository}
 import org.slf4j.LoggerFactory
@@ -24,16 +26,19 @@ class UserController @Autowired()(private val userRepository: UserRepository,
     }
   }
 
-  @RequestMapping(value = Array("/byCookie"), method = Array(RequestMethod.GET))
-  @ResponseBody
-  def findByCookieValue(@RequestParam cookie: String): Any = {
-    val user = userRepository.findByCookieValue(cookie)
-    if (user == null) {
-      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null)
+  def entityOrNotFound[T](entity: Optional[T]): ResponseEntity[T] = {
+    if (!entity.isPresent) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null.asInstanceOf[T])
     } else {
-      user
+      return ResponseEntity.status(HttpStatus.OK).body(entity.get())
     }
   }
+
+  @RequestMapping(value = Array("/byCookie"), method = Array(RequestMethod.GET))
+  @ResponseBody
+  def findByCookieValue(@RequestParam cookie: String): ResponseEntity[User] =
+    entityOrNotFound(userRepository.findByCookieValue(cookie))
+
 
   @RequestMapping(value = Array("/registerUser"), method = Array(RequestMethod.POST))
   @ResponseBody
@@ -55,8 +60,7 @@ class UserController @Autowired()(private val userRepository: UserRepository,
   @RequestMapping(method = Array(GET), value = Array("/byProvider/{provider}/{id}"))
   @ResponseBody
   def findByProviderCodeAndRemoteId(@PathVariable("provider") providerCode: String,
-                                    @PathVariable("id") remoteId: String): ResponseEntity[Identity] = {
-    val identity = identityRepository.findByProviderCodeAndRemoteId(providerCode, remoteId)
-    entityOrNotFound(identity)
-  }
+                                    @PathVariable("id") remoteId: String): ResponseEntity[Identity] =
+    entityOrNotFound(identityRepository.findByProviderCodeAndRemoteId(providerCode, remoteId))
+
 }

@@ -90,20 +90,19 @@ class CookieFilter @Autowired()(private val usersClient: UsersClient) extends Fi
     response.asInstanceOf[HttpServletResponse].addCookie(cookie)
   }
 
-  def linkIdentityToUser(user: User, principal: Principal): Any = {
+  def linkIdentityToUser(user: User, principal: Principal): Unit = {
     val oauth = principal.asInstanceOf[OAuth2Authentication]
     val identity = providers.getProviders()
       .find(_.canHandle(oauth))
       .map(_.createIdentity(oauth))
-      .getOrElse(null)
 
-    if (identity != null) {
+    if (identity.isDefined) {
       try {
         val existing: ResponseEntity[Identity]
-        = usersClient.findByProviderCodeAndRemoteId(identity.providerCode, identity.remoteId)
+        = usersClient.findByProviderCodeAndRemoteId(identity.get.providerCode, identity.get.remoteId)
         user.setIdentity(existing.getBody)
-      } catch (NotFoundException _) {
-        user.setIdentity(usersClient.saveIdentity(identity))
+      } catch {
+        case _: NotFoundException => user.setIdentity(usersClient.saveIdentity(identity.get))
       }
 
       usersClient.registerUser(user)
