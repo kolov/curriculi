@@ -18,33 +18,46 @@ class UserController @Autowired()(private val userRepository: UserRepository,
 
   val LOG = LoggerFactory.getLogger(getClass)
 
-  def entityOrNotFound[T](entity: T): ResponseEntity[T] = {
-    if (entity == null) {
-      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null.asInstanceOf[T])
-    } else {
-      return ResponseEntity.status(HttpStatus.OK).body(entity)
+  private def notFoundResponse[T]() = ResponseEntity.status(HttpStatus.NOT_FOUND).body(null.asInstanceOf[T])
+
+  private def foundResponse[T](entity: T) = ResponseEntity.status(HttpStatus.OK).body(entity)
+
+  private def entityOrNotFound[T](entity: Option[T]): ResponseEntity[T] = {
+    entity match {
+      case Some(e) => foundResponse(e)
+      case None => notFoundResponse()
+    }
+
+  }
+
+  def toOption[T](opt: Optional[T]): Option[T] = if (opt.isPresent) Some(opt.get()) else None
+
+  @RequestMapping(value = Array("/query"), method = Array(RequestMethod.GET))
+  @ResponseBody
+  def query(@RequestParam cookie: String,
+            @RequestParam create: Boolean): ResponseEntity[User] = {
+    toOption(userRepository.findByCookieValue(cookie)) match {
+      case Some(user) => foundResponse(user)
+      case None => if (create) foundResponse(createNewUser()) else notFoundResponse()
     }
   }
 
-  def entityOrNotFound[T](entity: Optional[T]): ResponseEntity[T] = {
-    if (!entity.isPresent) {
-      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null.asInstanceOf[T])
-    } else {
-      return ResponseEntity.status(HttpStatus.OK).body(entity.get())
-    }
-  }
-
-  @RequestMapping(value = Array("/byCookie"), method = Array(RequestMethod.GET))
-  @ResponseBody
-  def findByCookieValue(@RequestParam cookie: String): ResponseEntity[User] =
-    entityOrNotFound(userRepository.findByCookieValue(cookie))
-
-
-  @RequestMapping(value = Array("/registerUser"), method = Array(RequestMethod.POST))
-  @ResponseBody
-  def registerUser(@RequestBody user: User): User = {
+  private def createNewUser() = {
+    val user = new User
+    user.wipe
     userRepository.save(user)
     user
+  }
+
+  @RequestMapping(value = Array("/create"), method = Array(RequestMethod.POST))
+  @ResponseBody
+  def create(): User = createNewUser
+
+  @RequestMapping(value = Array("/registerIdentity"), method = Array(RequestMethod.POST))
+  @ResponseBody
+  def registerIdentity(@RequestBody identity: Identity): Identity = {
+    identityRepository.save(identity)
+    identity
   }
 
 
@@ -61,6 +74,8 @@ class UserController @Autowired()(private val userRepository: UserRepository,
   @ResponseBody
   def findByProviderCodeAndRemoteId(@PathVariable("provider") providerCode: String,
                                     @PathVariable("id") remoteId: String): ResponseEntity[Identity] =
-    entityOrNotFound(identityRepository.findByProviderCodeAndRemoteId(providerCode, remoteId))
+    entityOrNotFound(
+      toOption(
+        identityRepository.findByProviderCodeAndRemoteId(providerCode, remoteId)))
 
 }

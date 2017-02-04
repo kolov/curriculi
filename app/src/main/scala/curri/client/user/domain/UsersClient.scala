@@ -1,7 +1,9 @@
 package curri.client.user.domain
 
 
+import curri.NotFoundException
 import curri.app.FeignConfig
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.cloud.netflix.feign.FeignClient
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Component
@@ -18,36 +20,61 @@ trait UsersClient {
 
   @RequestMapping(method = Array(GET), value = Array("/byProvider/{provider}/{id}"))
   def findByProviderCodeAndRemoteId(@PathVariable("provider") providerCode: String,
-                                    @PathVariable("id") remoteId: String): ResponseEntity[Identity];
+                                    @PathVariable("id") remoteId: String): ResponseEntity[Identity]
 
   @RequestMapping(method = Array(POST), value = Array("/registerIdentity"))
-  def saveIdentity(identity: Identity): Identity
+  def registerIdentity(@RequestBody  identity: Identity): Identity
 
-  @RequestMapping(method = Array(GET), value = Array("/byCookie"))
-  def findByCookieValue(@RequestParam("cookie") cookie: String): User;
+  @RequestMapping(method = Array(GET), value = Array("/query"))
+  def query(@RequestParam("cookie") cookie: String, @RequestParam("create") create: Boolean): User
 
 
-  @RequestMapping(method = Array(POST), value = Array("/registerUser"))
-  def registerUser(@RequestBody user: User): User;
+  @RequestMapping(method = Array(POST), value = Array("/create"))
+  def create : User
+
+}
+
+/**
+  * Not sure how do handle 404 responses, trying this approch
+  *
+  * @param usersClient
+  */
+@Component
+class UsersServiceClient @Autowired()(private val usersClient: UsersClient) {
+  def create(): User = usersClient.create
+
+  def acceptsCookies(user: User) = usersClient.acceptsCookies(user)
+
+  def findByProviderCodeAndRemoteId(providerCode: String,
+                                    remoteId: String): Option[Identity] = {
+    try {
+      Some(usersClient.findByProviderCodeAndRemoteId(providerCode, remoteId).getBody)
+    } catch {
+      case _: NotFoundException => Option.empty
+    }
+
+  }
+
+  def registerIdentity(identity: Identity): Identity = usersClient.registerIdentity(identity)
+
+  def query(cookie: String, create: Boolean) = usersClient.query(cookie, create)
+
 }
 
 
+// experimental hystrix callback, not used
 @Component
 class UsersClientCallback extends UsersClient {
-  @RequestMapping(method = Array(POST), value = Array("/accepts-cookies"))
   override def acceptsCookies(user: User): User = null
 
-  @RequestMapping(method = Array(GET), value = Array("/byProvider/{provider}/{id}"))
   override def findByProviderCodeAndRemoteId(providerCode: String, remoteId: String): ResponseEntity[Identity] = null
 
-  @RequestMapping(method = Array(POST), value = Array("/registerIdentity"))
-  override def saveIdentity(identity: Identity): Identity = null
+  override def registerIdentity(identity: Identity): Identity = null
 
-  @RequestMapping(method = Array(GET), value = Array("/byCookie"))
-  override def findByCookieValue(cookie: String): User = null
+  override def query(cookie: String, create: Boolean): User = null
 
-  @RequestMapping(method = Array(POST), value = Array("/registerUser"))
-  override def registerUser(user: User): User = null
+  override def create: User = null
+
 }
 
 

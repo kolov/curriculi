@@ -5,17 +5,15 @@ import java.security.Principal
 import javax.servlet._
 import javax.servlet.http.{Cookie, HttpServletRequest, HttpServletResponse}
 
-import curri.NotFoundException
-import curri.client.user.domain.{Identity, User, UsersClient}
+import curri.client.user.domain.{User, UsersServiceClient}
 import curri.service.user.domain.oauth.AllProviders
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.http.ResponseEntity
 import org.springframework.security.oauth2.provider.OAuth2Authentication
 import org.springframework.stereotype.Component
 
 @Component
-class CookieFilter @Autowired()(private val usersClient: UsersClient) extends Filter {
+class CookieFilter @Autowired()(private val usersClient: UsersServiceClient) extends Filter {
 
   val LOG = LoggerFactory.getLogger(getClass)
 
@@ -28,13 +26,6 @@ class CookieFilter @Autowired()(private val usersClient: UsersClient) extends Fi
   def init(filterConfig: FilterConfig) {
   }
 
-
-  def createUser(): User = {
-    val user = new User()
-    user.wipe
-    val registered = usersClient.registerUser(user)
-    registered
-  }
 
   def curriCookie(request: HttpServletRequest): Option[String] = {
     val cookies: Array[Cookie] = request.asInstanceOf[HttpServletRequest].getCookies
@@ -51,37 +42,42 @@ class CookieFilter @Autowired()(private val usersClient: UsersClient) extends Fi
   def doFilter(req: ServletRequest, response: ServletResponse, chain: FilterChain): Unit = {
 
     val request: HttpServletRequest = req.asInstanceOf[HttpServletRequest]
-    val reqCookie: Option[String] = curriCookie(request)
-    var user: User = request.getSession(true).getAttribute(CookieFilter.ATTR_USER_NAME).asInstanceOf[User]
 
-    if (user == null && reqCookie.isDefined) {
-      user = usersClient.findByCookieValue(reqCookie.get)
+    var user: User = _
+    getUserFromSession(request) match {
+      case None =>
+        curriCookie(request) match {
+          case Some(cookie) => user = usersClient.query(cookie, true)
+          case None =>
+            user = usersClient.create()
+            setCookieInResponse(response, user)
+        }
+        putUserInSession(request, user)
+      case Some(u) => user = u
+
     }
-
-    if (user == null) {
-      user = createUser()
-    }
-
     request.setAttribute(CookieFilter.ATTR_USER_NAME, user)
-    request.getSession().setAttribute(CookieFilter.ATTR_USER_NAME, user)
 
     val principal = request.asInstanceOf[HttpServletRequest].getUserPrincipal
-    if (user.getIdentity == null) {
-      if (principal != null) {
-        linkIdentityToUser(user, principal)
-      }
-    } else {
-      if (principal == null) {
-        user.wipe
-        user = usersClient.registerUser(user)
-      }
+    if (user.getIdentity == null && principal != null) {
+      //just logged in
+      linkIdentityToUser(user, principal)
+    } else if (user.getIdentity != null && principal == null) {
+      // just logged out
+      user = usersClient.create()
     }
-
-    setCookieInResponse(response, user)
 
     chain.doFilter(request, response)
 
   }
+
+  def getUserFromSession(request: HttpServletRequest) = {
+    val u = request.getSession(true).getAttribute(CookieFilter.ATTR_USER_NAME).asInstanceOf[User]
+    if (u != null) Some(u) else None
+  }
+
+  def putUserInSession(request: HttpServletRequest, user: User) =
+    request.getSession(true).setAttribute(CookieFilter.ATTR_USER_NAME, user)
 
   def setCookieInResponse(response: ServletResponse, user: User): Unit = {
     val cookie: Cookie = new Cookie(CookieFilter.COOKIE_NAME, user.getCookieValue)
@@ -90,24 +86,32 @@ class CookieFilter @Autowired()(private val usersClient: UsersClient) extends Fi
     response.asInstanceOf[HttpServletResponse].addCookie(cookie)
   }
 
+  /**
+    * Called after a uprincipal appears in the request but the user has no identity
+    * - i.e. after user logs in.
+    * If this identity is already known, create a new session users with it.
+    * If it is new, save it, attach it to current user and continu
+    *
+    * @param user
+    * @param principal
+    */
   def linkIdentityToUser(user: User, principal: Principal): Unit = {
     val oauth = principal.asInstanceOf[OAuth2Authentication]
     val identity = providers.getProviders()
       .find(_.canHandle(oauth))
       .map(_.createIdentity(oauth))
 
-    if (identity.isDefined) {
-      try {
-        val existing: ResponseEntity[Identity]
-        = usersClient.findByProviderCodeAndRemoteId(identity.get.providerCode, identity.get.remoteId)
-        user.setIdentity(existing.getBody)
-      } catch {
-        case _: NotFoundException => user.setIdentity(usersClient.saveIdentity(identity.get))
-      }
+    identity match {
+      case None => LOG.error("Don't know how to process Oauth: " + oauth)
+        return
+      case Some(reqIdentityValue) =>
+        val existing = usersClient.findByProviderCodeAndRemoteId(reqIdentityValue.providerCode,
+          reqIdentityValue.remoteId)
 
-      usersClient.registerUser(user)
-    } else {
-      LOG.error("Could not process identity " + oauth)
+        existing match {
+          case Some(identotyValue) => user.setIdentity(identotyValue)
+          case None => user.setIdentity(usersClient.registerIdentity(reqIdentityValue))
+        }
     }
 
   }

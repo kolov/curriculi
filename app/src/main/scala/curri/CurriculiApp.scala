@@ -117,7 +117,7 @@ class CurriculiApp extends WebSecurityConfigurerAdapter {
   def cookieFilterRegistration(cookieFilter: CookieFilter): FilterRegistrationBean = {
     val registration = new FilterRegistrationBean()
     registration.setFilter(cookieFilter);
-    registration.addUrlPatterns("/v1/*", "/login/*", "/user/*");
+    registration.addUrlPatterns("/current/*", "/login/*");
     registration.setName("cookieFilter");
     // order is lowest precedence by default
     return registration;

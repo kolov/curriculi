@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.{RequestMapping, RequestMethod, R
   */
 
 @Controller
-@RequestMapping(Array("/v1/user"))
+@RequestMapping(Array("/current/user"))
 @EnableEurekaClient
 class UsersController(private val usersClient: UsersClient) {
 
@@ -25,11 +25,10 @@ class UsersController(private val usersClient: UsersClient) {
   def acceptsCookies(servletRequest: HttpServletRequest): User = {
 
     val user = servletRequest.getAttribute(CookieFilter.ATTR_USER_NAME).asInstanceOf[User]
-
     return usersClient.acceptsCookies(user)
   }
 
-  @RequestMapping(value = Array(""), method = Array(RequestMethod.POST))
+  @RequestMapping(value = Array(""), method = Array(RequestMethod.GET))
   @ResponseBody
   def user(servletRequest: HttpServletRequest): User =
     servletRequest.getAttribute(CookieFilter.ATTR_USER_NAME).asInstanceOf[User]

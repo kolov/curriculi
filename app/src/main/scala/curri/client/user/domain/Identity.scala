@@ -34,18 +34,19 @@ class Identity extends Serializable {
   var name: String = _
 
   @BeanProperty
-  @JsonIgnore
+  @JsonProperty("link")
   var link: String = _
 
   @BeanProperty
+  @JsonProperty("picture")
   var picture: String = _
 
   @BeanProperty
-  @JsonIgnore
+  @JsonProperty("gender")
   var gender: String = _
 
   @BeanProperty
-  @JsonIgnore
+  @JsonProperty("remoteId")
   var remoteId: String = _
 
 }
