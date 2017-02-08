@@ -6,9 +6,11 @@ A Scala Spring Boot application, mostly exercising Scala and Spring Cloud. Featu
 - Service registration and discovery with Eureka
 - Feign client
 - Edge service with Zuul
-- Microservice Documents - Mongodb (doesn't do a lot)
 - Microservice Users - Mongodb
-- session serialised in Redi
+- session serialised in Redis
+
+To run, the system needs this service(s) registerd in Eureka:
+- https://github.com/kolov/curri-docs-service
 
 ## Running locally
 
