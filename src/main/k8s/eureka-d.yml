@@ -1,0 +1,17 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: eureka
+spec:
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: eureka
+    spec:
+      containers:
+      - name: eureka
+        image: localhost:5000/kolov/eureka
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8761

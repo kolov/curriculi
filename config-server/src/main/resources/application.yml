@@ -8,6 +8,6 @@ spring:
     config:
       server:
         git:
-          uri: https://gitlab.com/kolov/curriculi-config-repo.git
-          password: ${GIT-PWD}
+          uri: ${GIT_URL}
+          password: ${GIT_PWD}
           username: ${GIT_USER}

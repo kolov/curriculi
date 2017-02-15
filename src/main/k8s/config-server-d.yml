@@ -1,0 +1,30 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: config-server
+spec:
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: config-server
+    spec:
+      containers:
+      - name: config-server
+        image: localhost:5000/kolov/curriculi-config-server
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8888
+        env:
+        - name: GIT_URL
+          value: https://gitlab.com/kolov/curriculi-config-repo.git
+        - name: GIT_USER
+          valueFrom:
+            configMapKeyRef:
+              name: curri-config
+              key: git.user
+        - name: GIT_PWD
+          valueFrom:
+            configMapKeyRef:
+              name: curri-config
+              key: git.pwd

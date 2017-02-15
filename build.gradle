@@ -47,8 +47,9 @@ allprojects {
 
     apply plugin: 'idea'
 
-    //group of docker images
+    //group of docker images. Don't include repository here, tag/push later
     group = 'kolov'
+    version='0.1-SNAPSHOT'
 
 }
 

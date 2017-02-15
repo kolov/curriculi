@@ -22,7 +22,7 @@ dependencies {
 
 task buildDocker(type: Docker) {
     push = false
-    applicationName = 'service-docs'
+    applicationName = 'curriculi-service-users'
     dockerfile = file('src/main/docker/Dockerfile')
 
     doFirst {

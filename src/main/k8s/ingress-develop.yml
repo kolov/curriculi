@@ -1,0 +1,12 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: dev-ingress
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /curriculi
+        backend:
+          serviceName: config-server
+          servicePort: 8888

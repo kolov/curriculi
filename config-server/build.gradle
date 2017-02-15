@@ -20,13 +20,13 @@ dependencies {
 sourceSets {
     main {
         resources {
-            srcDirs "src/main/resources", "../secrets/config-server"
+            srcDirs "src/main/resources" //, "../secrets/config-server"
         }
     }
 }
 
 task buildDocker(type: Docker) {
-    push = false
+    push = true
     applicationName = 'curriculi-config-server'
     dockerfile = file('src/main/docker/Dockerfile')
 
