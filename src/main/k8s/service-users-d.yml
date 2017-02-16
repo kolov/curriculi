@@ -15,3 +15,6 @@ spec:
         imagePullPolicy: Always
         ports:
         - containerPort: 8501
+        env:
+          - name: EUREKA_ENABLED
+            value: "true"

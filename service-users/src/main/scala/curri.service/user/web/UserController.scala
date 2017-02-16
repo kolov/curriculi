@@ -30,6 +30,7 @@ class UserController @Autowired()(private val userRepository: UserRepository,
 
   }
 
+  def toOption[T](v: T): Option[T] = if (v != null) Some(v) else None
   def toOption[T](opt: Optional[T]): Option[T] = if (opt.isPresent) Some(opt.get()) else None
 
   @RequestMapping(value = Array("/query"), method = Array(RequestMethod.GET))
