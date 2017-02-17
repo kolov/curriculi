@@ -4,22 +4,19 @@ spring:
   cloud:
       config:
         enabled: false
+  data:
+    mongodb:
+      uri:  "${MONGODB_URL:mongodb://127.0.0.1:27017/curri}"
 
 server:
     port: 8501
 
 eureka:
-#  instance:
-#      statusPageUrlPath: ${management.context-path}/info
-#      healthCheckUrlPath: ${management.context-path}/health
-#  client:
-#    serviceUrl:
-#      defaultZone: "${EUREKA_HOST:http://localhost:8761/eureka/}"
-  enabled: false
+  instance:
+      statusPageUrlPath: ${management.context-path}/info
+      healthCheckUrlPath: ${management.context-path}/health
+  client:
+    serviceUrl:
+      defaultZone: "${EUREKA_URL:http://localhost:8761/eureka/}"
 
-
-
-ribbon:
-  eureka:
-     enabled: false
 

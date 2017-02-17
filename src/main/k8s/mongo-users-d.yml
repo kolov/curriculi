@@ -1,0 +1,24 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: mongo-users
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mongo-users
+    spec:
+      volumes:
+        - name: mongo-users
+          hostPath:
+            path: /data/docker/volumes/mongo-users
+      containers:
+      - name: mongo-users
+        image: mongo:3.0
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 27017
+        volumeMounts:
+          - name: mongo-users
+            mountPath: /data/db

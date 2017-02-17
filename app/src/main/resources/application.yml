@@ -42,11 +42,12 @@ oauth2:
 spring:
   data:
     mongodb:
-      uri: mongodb://127.0.0.1:27017/curri
+      uri:  "${MONGODB_URL:mongodb://127.0.0.1:27017/curri}"
       database: curri
       name: curriculi
 
-# becaus of http://stackoverflow.com/questions/27249078/spring-boot-gives-templateinputexception-error-resolving-template-when-runnin
+# because of http://stackoverflow.com/questions/27249078/spring-boot-gives-templateinputexception-error-resolving
+-template-when-runnin
   thymeleaf:
       prefix: classpath:/templates
 
@@ -55,7 +56,7 @@ spring:
 eureka:
   client:
     serviceUrl:
-      defaultZone: "${EUREKA_HOST:http://localhost:8761/eureka/}"
+      defaultZone: "${EUREKA_URL:http://localhost:8761/eureka/}"
     registerWithEureka: false
     fetchRegistry: true
   instance:

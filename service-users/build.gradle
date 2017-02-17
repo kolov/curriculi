@@ -31,4 +31,28 @@ task buildDocker(type: Docker) {
             into stageDir
         }
     }
+
+    doLast {
+        tagTask(project.group, applicationName, version, true).execute()
+    }
+}
+
+def tagTask(group, applicationName, version, push) {
+    if (project.hasProperty('dockerRepository')) {
+
+        def dockerRepository = project.dockerRepository
+        def existingTag = "$group/$applicationName:$version"
+        def toCreateTag = "$dockerRepository/$group/$applicationName:latest"
+
+        return tasks.create("tag${applicationName}Image", Exec) {
+            println("Creating tag $toCreateTag from $existingTag")
+            commandLine 'docker', 'tag',
+                    "$existingTag",
+                    "$toCreateTag"
+            if (push) {
+                println("Pushing $toCreateTag ")
+                commandLine 'docker', 'push', "$toCreateTag"
+            }
+        }
+    }
 }

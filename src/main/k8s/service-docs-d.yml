@@ -1,0 +1,20 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: service-docs
+spec:
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: service-docs
+    spec:
+      containers:
+      - name: service-docs
+        image: localhost:5000/kolov/curriculi-service-docs
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8502
+        env:
+          - name: EUREKA_ENABLED
+            value: "true"

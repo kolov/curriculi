@@ -43,7 +43,8 @@ class CookieFilter @Autowired()(private val usersClient: UsersServiceClient) ext
 
     val request: HttpServletRequest = req.asInstanceOf[HttpServletRequest]
 
-    var user: User = _
+    var user: User = null
+
     getUserFromSession(request) match {
       case None =>
         curriCookie(request) match {

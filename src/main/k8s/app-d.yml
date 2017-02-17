@@ -1,24 +1,21 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: service-users
+  name: curriculi
 spec:
   replicas: 2
   template:
     metadata:
       labels:
-        app: service-users
+        app: curriculi
     spec:
       containers:
       - name: service-users
-        image: localhost:5000/kolov/curriculi-service-users
+        image: localhost:5000/kolov/curriculi
         imagePullPolicy: Always
         ports:
-        - containerPort: 8501
+        - containerPort: 8080
         env:
-          - name: EUREKA_ENABLED
-            value: "true"
           - name: EUREKA_URL
             value: http://eureka-server:8761/eureka/
-          - name: MONGODB_URL
-            value: mongodb://mongo-users:27017/curri
+

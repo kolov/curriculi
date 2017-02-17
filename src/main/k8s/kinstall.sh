@@ -15,6 +15,11 @@ kubectl apply -f $CURRI_ROOT/src/main/k8s/eureka-d.yml
 kubectl delete -f $CURRI_ROOT/src/main/k8s/eureka-s.yml
 kubectl apply -f $CURRI_ROOT/src/main/k8s/eureka-s.yml
 
+kubectl delete -f $CURRI_ROOT/src/main/k8s/mongo-users-d.yml
+kubectl apply -f $CURRI_ROOT/src/main/k8s/mongo-users-d.yml
+kubectl delete -f $CURRI_ROOT/src/main/k8s/mongo-users-s.yml
+kubectl apply -f $CURRI_ROOT/src/main/k8s/mongo-users-s.yml
+
 kubectl delete -f $CURRI_ROOT/src/main/k8s/service-users-d.yml
 kubectl apply -f $CURRI_ROOT/src/main/k8s/service-users-d.yml
 kubectl delete -f $CURRI_ROOT/src/main/k8s/service-users-s.yml
