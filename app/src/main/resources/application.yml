@@ -46,8 +46,7 @@ spring:
       database: curri
       name: curriculi
 
-# because of http://stackoverflow.com/questions/27249078/spring-boot-gives-templateinputexception-error-resolving
--template-when-runnin
+# because of http://stackoverflow.com/questions/27249078/spring-boot-gives-templateinputexception-error-resolving-template-when-runnin
   thymeleaf:
       prefix: classpath:/templates
 
