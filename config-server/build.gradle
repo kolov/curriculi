@@ -36,4 +36,7 @@ task buildDocker(type: Docker) {
             into stageDir
         }
     }
+    doLast {
+        tagTask(project.group, applicationName, version, true).each{ t -> t.execute()}
+    }
 }

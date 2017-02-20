@@ -1,5 +1,4 @@
-FROM ubuntu:16.04
-#FROM frolvlad/alpine-oraclejdk8:slim
+FROM kolov/java8
 VOLUME /tmp
 ADD *.jar app.jar
 RUN sh -c 'touch /app.jar'

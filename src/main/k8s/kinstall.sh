@@ -34,3 +34,7 @@ kubectl apply -f $CURRI_ROOT/src/main/k8s/service-users-s.yml
 kubectl delete -f $CURRI_ROOT/src/main/k8s/redis-d.yml
 kubectl apply -f $CURRI_ROOT/src/main/k8s/redis-d.yml
 kubectl apply -f $CURRI_ROOT/src/main/k8s/redis-s.yml
+
+kubectl delete -f $CURRI_ROOT/src/main/k8s/app-d.yml
+kubectl apply -f $CURRI_ROOT/src/main/k8s/app-d.yml
+kubectl apply -f $CURRI_ROOT/src/main/k8s/app-s.yml
