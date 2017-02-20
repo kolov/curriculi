@@ -3,11 +3,10 @@ package curri.client.user.domain
 import com.fasterxml.jackson.annotation.{JsonIgnore, JsonProperty}
 import com.fasterxml.jackson.module.scala.JsonScalaEnumeration
 import org.springframework.data.annotation.Id
-import org.springframework.data.mongodb.core.mapping.Document
 
 import scala.beans.BeanProperty
 
-@Document
+ 
 class Identity extends Serializable {
 
   @Id

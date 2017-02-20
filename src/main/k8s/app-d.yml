@@ -18,4 +18,8 @@ spec:
         env:
           - name: EUREKA_URL
             value: http://eureka-server:8761/eureka/
+          - name: REDIS_HOST
+            value: redis
+          - name: SPRING_CONFIG_URI
+            value: http://config-server:8888
 

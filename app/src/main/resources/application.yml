@@ -45,6 +45,8 @@ spring:
       uri:  "${MONGODB_URL:mongodb://127.0.0.1:27017/curri}"
       database: curri
       name: curriculi
+    redis:
+      host: "${REDIS_HOST:localhost}"
 
 # because of http://stackoverflow.com/questions/27249078/spring-boot-gives-templateinputexception-error-resolving-template-when-runnin
   thymeleaf:
