@@ -1,0 +1,24 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: mongo-docs
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mongo-docs
+    spec:
+      volumes:
+        - name: mongo-docs
+          hostPath:
+            path: /data/docker/volumes/mongo-docs
+      containers:
+      - name: mongo-docs
+        image: mongo:3.0
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 27017
+        volumeMounts:
+          - name: mongo-docs
+            mountPath: /data/db

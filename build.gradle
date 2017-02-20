@@ -54,7 +54,33 @@ allprojects {
     project.ext {
         dockerRepository = 'localhost:5000'
     }
+}
 
+def tagTask(group, applicationName, version, push) {
+
+    def result = []
+    if (project.hasProperty('dockerRepository')) {
+
+        def dockerRepository = project.dockerRepository
+        def existingTag = "$group/$applicationName:$version"
+        def toCreateTag = "$dockerRepository/$group/$applicationName:latest"
+
+
+        def task1 = tasks.create("tag${applicationName}Image", Exec) {
+            println("Creating tag $toCreateTag from $existingTag")
+            commandLine 'docker', 'tag', "$existingTag", "$toCreateTag"
+        }
+        result.add(task1)
+
+        if (push) {
+            def task2 = tasks.create("push${applicationName}Image", Exec) {
+                println("Pushing $toCreateTag")
+                commandLine 'docker', 'push', "$toCreateTag"
+            }
+            result.add(task2)
+        }
+        return result
+    }
 }
 
 task buildImages() {
