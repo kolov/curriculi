@@ -3,9 +3,11 @@ kind: Service
 metadata:
   name: curriculi
 spec:
+  type: NodePort
   ports:
     - name: curriculi
       port: 8080
       targetPort: 8080
+      nodePort: 30001
   selector:
     app: curriculi
