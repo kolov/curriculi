@@ -4,7 +4,6 @@ import javax.servlet.http.HttpServletRequest
 
 import curri.client.user.domain.{User, UsersClient}
 import org.slf4j.LoggerFactory
-import org.springframework.cloud.netflix.eureka.EnableEurekaClient
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.{RequestMapping, RequestMethod, ResponseBody}
 
@@ -14,11 +13,9 @@ import org.springframework.web.bind.annotation.{RequestMapping, RequestMethod, R
 
 @Controller
 @RequestMapping(Array("/current/user"))
-@EnableEurekaClient
 class UsersController(private val usersClient: UsersClient) {
 
   val LOG = LoggerFactory.getLogger(getClass)
-
 
   @RequestMapping(value = Array("/accepts-cookies"), method = Array(RequestMethod.POST))
   @ResponseBody

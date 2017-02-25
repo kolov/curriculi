@@ -53,14 +53,6 @@ spring:
       prefix: classpath:/templates
 
 
-
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: "${EUREKA_URL:http://localhost:8761/eureka/}"
-    registerWithEureka: false
-    fetchRegistry: true
-  instance:
-      preferIpAddress: true
-  server:
-    waitTimeInMsWhenSyncEmpty: 0
+service-users:
+  ribbon:
+    listOfServers: ${SERVICE_USERS:localhost:8501}

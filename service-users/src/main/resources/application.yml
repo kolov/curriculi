@@ -11,12 +11,4 @@ spring:
 server:
     port: 8501
 
-eureka:
-  instance:
-      statusPageUrlPath: ${management.context-path}/info
-      healthCheckUrlPath: ${management.context-path}/health
-  client:
-    serviceUrl:
-      defaultZone: ${EUREKA_URL:http://localhost:8761/eureka/}
-
 

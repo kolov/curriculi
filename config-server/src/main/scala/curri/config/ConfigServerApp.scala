@@ -14,10 +14,6 @@ object ConfigServerApp {
 
 
   def main(args: Array[String]) {
-    val is = ConfigServerApp.getClass().getResourceAsStream("/application.yml")
-
-    val buf = Stream.continually(is.read).takeWhile(_ != -1).map(_.toByte).toArray
-    println(new String(buf))
     SpringApplication.run(classOf[ConfigServerApp])
   }
 }

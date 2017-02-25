@@ -3,7 +3,6 @@ package curri.web
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.{Autowired, Value}
 import org.springframework.cloud.client.discovery.DiscoveryClient
-import org.springframework.cloud.netflix.eureka.EnableEurekaClient
 import org.springframework.core.env.PropertyResolver
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.{PathVariable, RequestMapping, RequestMethod, ResponseBody}
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.{PathVariable, RequestMapping, Re
 
 @Controller
 @RequestMapping(Array("/demo"))
-@EnableEurekaClient
 class DemoController() {
 
   val LOG = LoggerFactory.getLogger(getClass)

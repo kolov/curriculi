@@ -3,16 +3,13 @@ package curri
 import javax.servlet.Filter
 
 import com.fasterxml.jackson.module.scala.DefaultScalaModule
-import com.netflix.governator.annotations.binding.Response
 import curri.web.CookieFilter
-import feign.codec.ErrorDecoder
 import org.springframework.beans.factory.annotation.{Autowired, Value}
 import org.springframework.boot.SpringApplication
+import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.autoconfigure.security.oauth2.resource.{ResourceServerProperties, UserInfoTokenServices}
-import org.springframework.boot.autoconfigure.{EnableAutoConfiguration, SpringBootApplication}
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.boot.web.servlet.FilterRegistrationBean
-import org.springframework.cloud.netflix.eureka.EnableEurekaClient
 import org.springframework.cloud.netflix.feign.EnableFeignClients
 import org.springframework.cloud.netflix.zuul.EnableZuulProxy
 import org.springframework.context.annotation._
@@ -34,7 +31,6 @@ import org.springframework.session.data.redis.config.annotation.web.http.EnableR
 @SpringBootApplication
 @EnableRedisHttpSession
 @EnableZuulProxy
-@EnableEurekaClient
 @EnableFeignClients
 class CurriculiApp extends WebSecurityConfigurerAdapter {
 

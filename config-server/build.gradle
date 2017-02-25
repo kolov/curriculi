@@ -20,7 +20,7 @@ dependencies {
 sourceSets {
     main {
         resources {
-            srcDirs "src/main/resources" //, "../secrets/config-server"
+            srcDirs "src/main/resources"
         }
     }
 }
