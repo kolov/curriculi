@@ -24,6 +24,7 @@ buildscript {
 
 }
 
+group= 'com.akolov.curi'
 
 allprojects {
 

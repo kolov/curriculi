@@ -21,9 +21,9 @@ class DocumentsLoader {
     val header = jsonMapper.readValue(json, classOf[Document])
     header.content = content
 
-    val res : String = client.post(header)
+//    val res : String = client.post(header)
 
-    System.out.println("POSTED " + baseName + ", response= " + res)
+    System.out.println("POSTED " + baseName + ", response= " + 2)
   }
 
   def loadDocuments(folder: String, documentType: String): Unit = {

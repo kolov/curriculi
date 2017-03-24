@@ -14,7 +14,7 @@ spec:
         image: localhost:5000/kolov/curriculi-service-docs
         imagePullPolicy: Always
         ports:
-        - containerPort: 8502
+        - containerPort: 9000
         env:
-          - name: EUREKA_ENABLED
-            value: "true"
+          - name: MONGO_HOST
+            value: mongo-user

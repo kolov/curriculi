@@ -4,6 +4,9 @@ apply plugin: 'docker'
 
 
 dependencies {
+
+    compile project(':common')
+
     compile("org.springframework.boot:spring-boot-starter-web")
     compile("org.springframework.boot:spring-boot-starter-data-mongodb")
     compile("org.springframework.boot:spring-boot-devtools")

@@ -1,9 +1,9 @@
 package curri.service.user.web
 
+import com.akolov.curri.web.oauth.Codes.FACEBOOK
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.scala.DefaultScalaModule
 import com.fasterxml.jackson.module.scala.experimental.ScalaObjectMapper
-import curri.service.user.domain.oauth.Codes._
 import curri.service.user.domain.{Identity, User}
 import curri.service.user.persist.{IdentityRepository, UserRepository}
 import org.assertj.core.api.Assertions
@@ -51,7 +51,7 @@ class UserControllerJsonIT {
     ReflectionTestUtils.setField(user, "cookieValue", "abcde")
     ReflectionTestUtils.setField(user, "identity", identity)
 
-   System.out.println (json.write(user))
+    System.out.println(json.write(user))
 
     Assertions.assertThat(json.write(user)).isEqualToJson("user-1-test.json")
 

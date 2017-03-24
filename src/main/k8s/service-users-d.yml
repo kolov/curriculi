@@ -17,4 +17,4 @@ spec:
         - containerPort: 8501
         env:
           - name: MONGODB_URL
-            value: mongodb://mongo-users:27017/curri
+            value: mongodb://mongo-users:27017/curri-users

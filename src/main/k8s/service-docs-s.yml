@@ -6,6 +6,6 @@ spec:
   ports:
     - name: http
       port: 8502
-      targetPort: 8502
+      targetPort: 9000
   selector:
     app: service-docs

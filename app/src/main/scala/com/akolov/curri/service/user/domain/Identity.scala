@@ -1,14 +1,12 @@
-package curri.service.user.domain
+package com.akolov.curri.service.user.domain
 
-import com.akolov.curri.web.oauth.IdentityCodesType
-import org.springframework.data.annotation.Id
 import com.fasterxml.jackson.annotation.{JsonIgnore, JsonProperty}
 import com.fasterxml.jackson.module.scala.JsonScalaEnumeration
-import org.springframework.data.mongodb.core.mapping.Document
+import org.springframework.data.annotation.Id
 
 import scala.beans.BeanProperty
 
-@Document
+ 
 class Identity extends Serializable {
 
   @Id

@@ -13,10 +13,12 @@ fi
 kubectl delete configmap curri-config
 sh  $CURRI_ROOT/secrets/config-server/set-config-server-config.sh
 
+# Config server
 kubectl delete -f $CURRI_ROOT/src/main/k8s/config-server-d.yml
 kubectl apply -f $CURRI_ROOT/src/main/k8s/config-server-d.yml
 kubectl apply -f $CURRI_ROOT/src/main/k8s/config-server-s.yml
 
+#service users
 kubectl delete -f $CURRI_ROOT/src/main/k8s/mongo-users-d.yml
 kubectl apply -f $CURRI_ROOT/src/main/k8s/mongo-users-d.yml
 kubectl apply -f $CURRI_ROOT/src/main/k8s/mongo-users-s.yml
@@ -25,6 +27,16 @@ kubectl delete -f $CURRI_ROOT/src/main/k8s/service-users-d.yml
 kubectl apply -f $CURRI_ROOT/src/main/k8s/service-users-d.yml
 kubectl apply -f $CURRI_ROOT/src/main/k8s/service-users-s.yml
 
+#service docs
+kubectl delete -f $CURRI_ROOT/src/main/k8s/mongo-docs-d.yml
+kubectl apply -f $CURRI_ROOT/src/main/k8s/mongo-docs-d.yml
+kubectl apply -f $CURRI_ROOT/src/main/k8s/mongo-docs-s.yml
+
+kubectl delete -f $CURRI_ROOT/src/main/k8s/service-docs-d.yml
+kubectl apply -f $CURRI_ROOT/src/main/k8s/service-docs-d.yml
+kubectl apply -f $CURRI_ROOT/src/main/k8s/service-docs-s.yml
+
+#web app
 kubectl delete -f $CURRI_ROOT/src/main/k8s/redis-d.yml
 kubectl apply -f $CURRI_ROOT/src/main/k8s/redis-d.yml
 kubectl apply -f $CURRI_ROOT/src/main/k8s/redis-s.yml
