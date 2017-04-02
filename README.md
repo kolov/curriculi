@@ -31,14 +31,11 @@ Place `application.yml` with a Git server url and credentiials there.
 #### Start eureka-server, then all services and the application separately
 Run their corresponding @SpringBootApplication main()
 
-### Docker Compose
+### Docker  
 
-There is one image containing a secret - config-server need the credentios to the git repo where the other 
-secrets are kept.
+    aws ecr get-login --region eu-central-1
 
-    ./gradlew build buildImages
-    docker-compose -f src/main/docker/docker-compose.yml up
-    Go to http://curri.xip.io:8080/index
+ 
     
 ## Kubernetes
 

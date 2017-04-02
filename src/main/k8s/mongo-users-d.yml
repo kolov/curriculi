@@ -10,9 +10,12 @@ spec:
         app: mongo-users
     spec:
       volumes:
+#        - name: mongo-users
+#          hostPath:
+#            path: /data/docker/volumes/mongo-users
         - name: mongo-users
-          hostPath:
-            path: /data/docker/volumes/mongo-users
+          persistentVolumeClaim:
+            claimName: mongo-users
       containers:
       - name: mongo-users
         image: mongo:3.0

@@ -11,7 +11,7 @@ spec:
     spec:
       containers:
       - name: config-server
-        image: localhost:5000/kolov/curriculi-config-server
+        image: 391471456712.dkr.ecr.eu-central-1.amazonaws.com/kolov/curriculi-config-server
         imagePullPolicy: Always
         ports:
         - containerPort: 8888
