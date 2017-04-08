@@ -10,9 +10,8 @@ spec:
         app: curriculi
     spec:
       containers:
-      - name: service-users
-        image: localhost:5000/kolov/curriculi
-        imagePullPolicy: Always
+      - name: curriculi
+        image: eu.gcr.io/iconic-setup-91510/curriculi
         ports:
         - containerPort: 8080
         env:

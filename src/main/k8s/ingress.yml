@@ -1,0 +1,33 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: default
+spec:
+  backend:
+    serviceName: nginx
+    servicePort: 80
+  rules:
+  - host: curricu.li
+    http:
+      paths:
+      - backend:
+          serviceName: curriculi
+          servicePort: 8080
+  - host: where2fly2.com
+    http:
+      paths:
+      - backend:
+          serviceName: w2f2
+          servicePort: 3000
+  - host: transavia.where2fly2.com
+    http:
+      paths:
+      - backend:
+          serviceName: w2f2
+          servicePort: 3000
+  - host: holidays.where2fly2.com
+    http:
+      paths:
+      - backend:
+          serviceName: w2f2
+          servicePort: 3000

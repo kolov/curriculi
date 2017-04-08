@@ -2,7 +2,7 @@
 
 # Comment out otr replace the following line
 export CURRI_ROOT=~/projects/curriculi
-export DOCKER_REGISTRY=391471456712.dkr.ecr.eu-central-1.amazonaws.com
+#export DOCKER_REGISTRY=391471456712.dkr.ecr.eu-central-1.amazonaws.com
 if [ -z ${CURRI_ROOT+x} ]; then
   echo "CURRI_ROOT is unset"
   exit 1;
@@ -13,6 +13,8 @@ fi
 kubectl delete configmap curri-config
 sh  $CURRI_ROOT/secrets/config-server/set-config-server-config.sh
 
+kubectl run nginx --image=nginx --port=80
+kubectl expose deployment nginx --target-port=80 --type=NodePort
 
 # Config server
 kubectl delete -f $CURRI_ROOT/src/main/k8s/config-server-d.yml
@@ -20,10 +22,10 @@ kubectl apply -f $CURRI_ROOT/src/main/k8s/config-server-d.yml
 kubectl apply -f $CURRI_ROOT/src/main/k8s/config-server-s.yml
 
 #volumes
-kubectl delete -f $CURRI_ROOT/src/main/k8s/aws-storage.yml
-kubectl apply -f $CURRI_ROOT/src/main/k8s/aws-storage.yml
-kubectl delete -f $CURRI_ROOT/src/main/k8s/aws-pvc.yml
-kubectl apply -f $CURRI_ROOT/src/main/k8s/aws-pvc.yml
+#kubectl delete -f $CURRI_ROOT/src/main/k8s/aws-storage.yml
+#kubectl apply -f $CURRI_ROOT/src/main/k8s/aws-storage.yml
+#kubectl delete -f $CURRI_ROOT/src/main/k8s/aws-pvc.yml
+#kubectl apply -f $CURRI_ROOT/src/main/k8s/aws-pvc.yml
 
 #service users DB
 kubectl delete -f $CURRI_ROOT/src/main/k8s/mongo-users-d.yml
@@ -53,6 +55,5 @@ kubectl apply -f $CURRI_ROOT/src/main/k8s/redis-s.yml
 #web app
 kubectl delete -f $CURRI_ROOT/src/main/k8s/app-d.yml
 kubectl apply -f $CURRI_ROOT/src/main/k8s/app-d.yml
-kubectl apply -f $CURRI_ROOT/src/main/k8s/app-s.yml
-
-kubectl expose deployment curriculi --port=8080 --target-port=8080 --name=curriculi --type=LoadBalancer
+kubectl expose deployment curriculi --target-port=8080 --type=NodePort
+kubectl apply -f $CURRI_ROOT/src/main/k8s/ingress.yml

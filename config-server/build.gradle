@@ -37,6 +37,6 @@ task buildDocker(type: Docker) {
         }
     }
     doLast {
-        tagTask("iconic-setup-91510", applicationName, version, true).each{ t -> t.execute()}
+        tagTask(applicationName, version).each{ t -> t.execute()}
     }
 }

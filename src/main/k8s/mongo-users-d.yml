@@ -13,9 +13,14 @@ spec:
 #        - name: mongo-users
 #          hostPath:
 #            path: /data/docker/volumes/mongo-users
-        - name: mongo-users
-          persistentVolumeClaim:
-            claimName: mongo-users
+        - name: mongo-service-users
+        #PVC
+#          persistentVolumeClaim:
+#            claimName: users-service-volume
+        # PV
+          gcePersistentDisk:
+            pdName: service-users
+            fsType: ext4
       containers:
       - name: mongo-users
         image: mongo:3.0
@@ -23,5 +28,5 @@ spec:
         ports:
         - containerPort: 27017
         volumeMounts:
-          - name: mongo-users
+          - name: mongo-service-users
             mountPath: /data/db

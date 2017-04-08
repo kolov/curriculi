@@ -35,7 +35,7 @@ task buildDocker(type: Docker) {
     }
 
     doLast {
-        tagTask(project.group, applicationName, version, true).each{ t -> t.execute()}
+        tagTask( applicationName, version).each{ t -> t.execute()}
     }
 }
 

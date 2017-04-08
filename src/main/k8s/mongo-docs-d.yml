@@ -11,8 +11,12 @@ spec:
     spec:
       volumes:
         - name: mongo-docs
-          hostPath:
-            path: /data/docker/volumes/mongo-docs
+#          hostPath:
+#            path: /data/docker/volumes/mongo-docs
+                  # PV
+          gcePersistentDisk:
+            pdName: service-docs
+            fsType: ext4
       containers:
       - name: mongo-docs
         image: mongo:3.0

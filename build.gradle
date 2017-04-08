@@ -58,7 +58,9 @@ allprojects {
     }
 }
 
-def tagTask(group, applicationName, version, push) {
+def tagTask(applicationName, version) {
+
+    def group="iconic-setup-91510"
 
     def result = []
     if (project.hasProperty('dockerRepository')) {
@@ -74,13 +76,13 @@ def tagTask(group, applicationName, version, push) {
         }
         result.add(task1)
 
-        if (push) {
+
             def task2 = tasks.create("push${applicationName}Image", Exec) {
                 println("Pushing $toCreateTag")
                 commandLine 'docker', 'push', "$toCreateTag"
             }
             result.add(task2)
-        }
+
 
     } else {
         println("CANT'BUILD withoud dockerRepository")
