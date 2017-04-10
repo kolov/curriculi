@@ -11,8 +11,9 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: eu.gcr.io/iconic-setup-91510/nginx-curriculi
+        image: eu.gcr.io/iconic-setup-91510/nginx-curriculi:10
         ports:
         - containerPort: 80
+
 
 

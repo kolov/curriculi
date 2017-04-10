@@ -44,20 +44,31 @@ class CookieFilter @Autowired()(private val usersClient: UsersServiceClient) ext
 
     val request: HttpServletRequest = req.asInstanceOf[HttpServletRequest]
 
-    var user: User = null
+    def whichUser(): User = {
+      val user = request.getSession(true).getAttribute(CookieFilter.ATTR_USER_NAME).asInstanceOf[User]
+      user match {
+        case null => {
+          curriCookie(request) match {
+            case Some(cookie) => usersClient.query(cookie, true)
+            case None => null
 
-    getUserFromSession(request) match {
-      case None =>
-        curriCookie(request) match {
-          case Some(cookie) => user = usersClient.query(cookie, true)
-          case None =>
-            user = usersClient.create()
-            setCookieInResponse(response, user)
+          }
         }
-        putUserInSession(request, user)
-      case Some(u) => user = u
-
+        case user => user
+      }
     }
+
+    val user: User = whichUser match {
+      case null => {
+        val user = usersClient.create()
+        putUserInSession(request, user)
+        setCookieInResponse(response, user)
+        user
+      }
+      case user => user
+    }
+
+
     request.setAttribute(CookieFilter.ATTR_USER_NAME, user)
 
     val principal = request.asInstanceOf[HttpServletRequest].getUserPrincipal
@@ -66,17 +77,13 @@ class CookieFilter @Autowired()(private val usersClient: UsersServiceClient) ext
       linkIdentityToUser(user, principal)
     } else if (user.getIdentity != null && principal == null) {
       // just logged out
-      user = usersClient.create()
+      // ??? user = usersClient.create()
     }
 
     chain.doFilter(request, response)
 
   }
 
-  def getUserFromSession(request: HttpServletRequest) = {
-    val u = request.getSession(true).getAttribute(CookieFilter.ATTR_USER_NAME).asInstanceOf[User]
-    if (u != null) Some(u) else None
-  }
 
   def putUserInSession(request: HttpServletRequest, user: User) =
     request.getSession(true).setAttribute(CookieFilter.ATTR_USER_NAME, user)

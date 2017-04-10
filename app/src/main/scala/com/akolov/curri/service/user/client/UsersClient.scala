@@ -14,22 +14,22 @@ import org.springframework.web.bind.annotation.{PathVariable, RequestBody, Reque
   configuration = Array(classOf[FeignConfig])
 )
 trait UsersClient {
-  @RequestMapping(method = Array(POST), value = Array("/accepts-cookies"))
-  def acceptsCookies(@RequestBody user: User): User;
+  @RequestMapping(method = Array(POST), value = Array("{id}/accepts-cookies"))
+  def acceptsCookies(@PathVariable("id") id: String): User
 
   @RequestMapping(method = Array(GET), value = Array("/byProvider/{provider}/{id}"))
   def findByProviderCodeAndRemoteId(@PathVariable("provider") providerCode: String,
                                     @PathVariable("id") remoteId: String): ResponseEntity[Identity]
 
   @RequestMapping(method = Array(POST), value = Array("/registerIdentity"))
-  def registerIdentity(@RequestBody  identity: Identity): Identity
+  def registerIdentity(@RequestBody identity: Identity): Identity
 
   @RequestMapping(method = Array(GET), value = Array("/query"))
   def query(@RequestParam("cookie") cookie: String, @RequestParam("create") create: Boolean): User
 
 
   @RequestMapping(method = Array(POST), value = Array("/create"))
-  def create : User
+  def create: User
 
 }
 
@@ -42,7 +42,7 @@ trait UsersClient {
 class UsersServiceClient @Autowired()(private val usersClient: UsersClient) {
   def create(): User = usersClient.create
 
-  def acceptsCookies(user: User) = usersClient.acceptsCookies(user)
+  def acceptsCookies(id: String) = usersClient.acceptsCookies(id)
 
   def findByProviderCodeAndRemoteId(providerCode: String,
                                     remoteId: String): Option[Identity] = {

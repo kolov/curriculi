@@ -24,7 +24,7 @@ class UsersController(private val usersClient: UsersClient) {
   def acceptsCookies(servletRequest: HttpServletRequest): User = {
 
     val user = servletRequest.getAttribute(CookieFilter.ATTR_USER_NAME).asInstanceOf[User]
-    return usersClient.acceptsCookies(user)
+     usersClient.acceptsCookies(user.id)
   }
 
   @RequestMapping(value = Array(""), method = Array(RequestMethod.GET))

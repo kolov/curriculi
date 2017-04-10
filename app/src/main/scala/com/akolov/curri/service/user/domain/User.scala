@@ -11,7 +11,8 @@ import scala.beans.BeanProperty
 class User() extends Serializable {
 
   @Id
-  @JsonIgnore
+  @BeanProperty
+  @JsonProperty("id")
   var id: String = _
 
   @BeanProperty

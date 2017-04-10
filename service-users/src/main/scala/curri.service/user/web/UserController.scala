@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.{HttpStatus, ResponseEntity}
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.RequestMethod.GET
-import org.springframework.web.bind.annotation._
+import org.springframework.web.bind.annotation.{PathVariable, _}
 
 @Controller
 @RequestMapping(Array("/"))
@@ -46,8 +46,8 @@ class UserController @Autowired()(private val userRepository: UserRepository,
   private def createNewUser() = {
     val user = new User
     user.wipe
-    userRepository.save(user)
-    user
+    val result = userRepository.save(user)
+    result
   }
 
   @RequestMapping(value = Array("/create"), method = Array(RequestMethod.POST))
@@ -62,11 +62,14 @@ class UserController @Autowired()(private val userRepository: UserRepository,
   }
 
 
-  @RequestMapping(value = Array("/accepts-cookies"), method = Array(RequestMethod.POST))
+  @RequestMapping(value = Array("{id}/accepts-cookies"), method = Array(RequestMethod.POST))
   @ResponseBody
-  def acceptsCookies(@RequestBody user: User): User = {
-    user.setAcceptsCookies(true)
-    userRepository.save(user)
+  def acceptsCookies(@PathVariable("id") id : String): User = {
+    val user : User = userRepository.findOne(id)
+    if( user != null) {
+      user.setAcceptsCookies(true)
+      userRepository.save(user)
+    }
     user
   }
 
