@@ -9,8 +9,7 @@ machine:
 dependencies:
 #  pre:
   override:
-    - ./gradlew package
-    - ./gradlew buildImages
+    - ./gradlew bowerInstall build buildImages
 
 deployment:
   prod:
