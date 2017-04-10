@@ -9,8 +9,8 @@ machine:
 dependencies:
 #  pre:
   override:
-    - gradlew package
-    - gradlew buildImages
+    - ./gradlew package
+    - ./gradlew buildImages
 
 deployment:
   prod:
