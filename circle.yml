@@ -5,6 +5,7 @@ machine:
     PROJECT_NAME: iconic-setup-91510
     CLUSTER_NAME: cluster-1
     CLOUDSDK_COMPUTE_ZONE: europe-west1-b
+    APP_NAME: w2f2
 
 dependencies:
 #  pre:
@@ -13,7 +14,7 @@ dependencies:
 
 deployment:
   prod:
-    branch: developXX
+    branch: develop
     commands:
       - echo $GCLOUD_SERVICE_KEY | base64 --decode --ignore-garbage > ${HOME}/gcloud-service-key.json
       - sudo /opt/google-cloud-sdk/bin/gcloud --quiet components update --version 150.0.0
@@ -26,9 +27,9 @@ deployment:
       #    - sudo /opt/google-cloud-sdk/bin/gcloud config config-helper --format=json --verbosity=debug
       #    - sudo cat ${HOME}/.kube/config
       - docker info
-      - docker build -t eu.gcr.io/${PROJECT_NAME}/w2f2:$CIRCLE_SHA1  .
-      - docker tag eu.gcr.io/${PROJECT_NAME}/w2f2:$CIRCLE_SHA1 eu.gcr.io/${PROJECT_NAME}/w2f2:latest
-      - sudo /opt/google-cloud-sdk/bin/gcloud --verbosity=debug docker -- push eu.gcr.io/${PROJECT_NAME}/w2f2
+      - docker build -t eu.gcr.io/${PROJECT_NAME}/$APP_NAME:$CIRCLE_SHA1  .
+      - docker tag eu.gcr.io/${PROJECT_NAME}/$APP_NAME:$CIRCLE_SHA1 eu.gcr.io/${PROJECT_NAME}/w2f2:latest
+      - sudo /opt/google-cloud-sdk/bin/gcloud --verbosity=debug docker -- push eu.gcr.io/${PROJECT_NAME}/w2f2:$CIRCLE_SHA1
       - sudo chown -R ubuntu:ubuntu /home/ubuntu/.kube
-      - kubectl delete deployment w2f2
-      - kubectl apply -f docker/kube/w2f2-d.yml
+      - echo $K8CONFIG | base64 --decode --ignore-garbage > /home/ubuntu/.kube/config
+      - kubectl patch deployment $APP_NAME -p '{"spec":{"template":{"spec":{"containers":[{"name":"$APP_NAME", "image":"eu.gcr.io/'"$PROJECT_NAME/$APP_NAME:$CIRCLE_SHA1"'"}]}}}}'
