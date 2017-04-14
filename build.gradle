@@ -24,7 +24,7 @@ buildscript {
 
 }
 
-group= 'com.akolov.curi'
+group = 'com.akolov.curi'
 
 allprojects {
 
@@ -60,33 +60,28 @@ allprojects {
 
 def tagTask(applicationName, version) {
 
-    def group="iconic-setup-91510"
+    def group = "iconic-setup-91510"
 
     def result = []
-    if (project.hasProperty('dockerRepository')) {
 
-        def dockerRepository = project.dockerRepository
-        def existingTag = "$group/$applicationName:$version"
-        def toCreateTag = "$dockerRepository/$group/$applicationName:latest"
-
-
-        def task1 = tasks.create("tag${applicationName}Image", Exec) {
-            println("Creating tag $toCreateTag from $existingTag")
-            commandLine 'docker', 'tag', "$existingTag", "$toCreateTag"
-        }
-        result.add(task1)
+    def existingTag = "$group/$applicationName:$version"
+    def dockerRepository = project.dockerRepository
+    def toCreateTag = "$dockerRepository/$group/$applicationName:latest"
 
 
-            def task2 = tasks.create("push${applicationName}Image", Exec) {
-                println("Pushing $toCreateTag")
-                commandLine 'docker', 'push', "$toCreateTag"
-            }
-            result.add(task2)
-
-
-    } else {
-        println("CANT'BUILD withoud dockerRepository")
+    def task1 = tasks.create("tag${applicationName}Image", Exec) {
+        println("Creating tag $toCreateTag from $existingTag")
+        commandLine 'docker', 'tag', "$existingTag", "$toCreateTag"
     }
+    result.add(task1)
+
+
+//    def task2 = tasks.create("push${applicationName}Image", Exec) {
+//        println("Pushing $toCreateTag")
+//        commandLine 'docker', 'push', "$toCreateTag"
+//    }
+//    result.add(task2)
+
     return result
 }
 
