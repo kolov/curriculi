@@ -16,7 +16,7 @@ dependencies:
     - ./gradlew bowerInstall
     - ./gradlew build
     - ./gradlew service-users:buildDocker
-    - ./gradlew curriculi:buildDocker
+    - ./gradlew app:buildDocker
 
 
 deployment:
