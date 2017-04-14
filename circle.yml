@@ -20,7 +20,7 @@ dependencies:
 
 deployment:
   prod:
-    branch: develop
+    branch: master
     commands:
       - echo $GCLOUD_SERVICE_KEY | base64 --decode --ignore-garbage > ${HOME}/gcloud-service-key.json
       - sudo /opt/google-cloud-sdk/bin/gcloud --quiet components update --version 150.0.0
