@@ -14,8 +14,10 @@ dependencies:
 
   override:
     - ./gradlew clean build
-    - ls app/src/main/resources/static
-    - ls app/src/main/resources/static/assets
+    - ls -al app/src/main/resources/static
+    - ls -al app/src/main/resources/static/assets
+    - ls -al app/src/main/resources/static/assets
+    - tar -tvf app/build/libs/curriculi-0.0.1-SNAPSHOT.jar
     - ./gradlew service-users:buildDocker
     - ./gradlew app:buildDocker
 
