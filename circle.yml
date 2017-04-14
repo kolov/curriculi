@@ -14,7 +14,6 @@ dependencies:
 
   override:
     - ./gradlew clean build
-    - jar -tf app/build/libs/curriculi-0.0.1-SNAPSHOT.jar | grep asset
     - ./gradlew service-users:buildDocker
     - ./gradlew app:buildDocker
 
