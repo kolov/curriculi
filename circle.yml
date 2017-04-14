@@ -15,7 +15,7 @@ dependencies:
   override:
     - ./gradlew bowerInstall
     - ./gradlew build
-    - ./gradlew curriculi-service-users:buildDocker
+    - ./gradlew service-users:buildDocker
     - ./gradlew curriculi:buildDocker
 
 
