@@ -13,8 +13,7 @@ dependencies:
 
 
   override:
-    - ./gradlew bowerInstall
-    - ./gradlew build
+    - ./gradlew clean build
     - ./gradlew service-users:buildDocker
     - ./gradlew app:buildDocker
 
