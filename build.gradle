@@ -49,7 +49,7 @@ allprojects {
     apply plugin: 'idea'
 
     //group of docker images. Don't include repository here, tag/push later
-    group = 'iconic-setup-91510'
+    group = 'kolov'
     version = '0.1-SNAPSHOT'
 
     project.ext {
@@ -60,13 +60,12 @@ allprojects {
 
 def tagTask(applicationName, version) {
 
-    def group = "iconic-setup-91510"
+    def group = "kolov"
 
     def result = []
 
     def existingTag = "$group/$applicationName:$version"
-    def dockerRepository = project.dockerRepository
-    def toCreateTag = "$dockerRepository/$group/$applicationName:latest"
+    def toCreateTag = "$group/$applicationName:latest"
 
 
     def task1 = tasks.create("tag${applicationName}Image", Exec) {

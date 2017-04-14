@@ -15,7 +15,8 @@ dependencies:
   override:
     - ./gradlew bowerInstall
     - ./gradlew build
-#    - ./gradlew buildImages
+    - ./gradlew curriculi-service-users:buildDocker
+    - ./gradlew curriculi:buildDocker
 
 
 deployment:
@@ -31,13 +32,13 @@ deployment:
       - sudo /opt/google-cloud-sdk/bin/gcloud config set compute/zone ${CLOUDSDK_COMPUTE_ZONE}
       - sudo /opt/google-cloud-sdk/bin/gcloud container clusters get-credentials $CLUSTER_NAME
 # APP1
-      - docker build -t eu.gcr.io/${PROJECT_NAME}/${APP1_NAME}:$CIRCLE_SHA1  ${APP1_NAME}/src/main/docker/
+      - docker tag  kolov/${APP1_NAME} eu.gcr.io/${PROJECT_NAME}/${APP1_NAME}:$CIRCLE_SHA1
       - sudo /opt/google-cloud-sdk/bin/gcloud --verbosity=debug docker -- push eu.gcr.io/${PROJECT_NAME}/${APP1_NAME}:$CIRCLE_SHA1
       - sudo chown -R ubuntu:ubuntu /home/ubuntu/.kube
       - sudo chown -R $USER /home/ubuntu/.config
       - kubectl patch deployment ${APP_NAME} -p '{"spec":{"template":{"spec":{"containers":[{"name":"'${APP1_NAME}'", "image":"eu.gcr.io/'${PROJECT_NAME}/${APP1_NAME}:${CIRCLE_SHA1}'"}]}}}}'
 # APP2
-      - docker build -t eu.gcr.io/${PROJECT_NAME}/${APP2_NAME}:$CIRCLE_SHA1  ${APP2_NAME}/src/main/docker/
+      - docker tag  kolov/${APP2_NAME} eu.gcr.io/${PROJECT_NAME}/${APP2_NAME}:$CIRCLE_SHA1
       - sudo /opt/google-cloud-sdk/bin/gcloud --verbosity=debug docker -- push eu.gcr .io/${PROJECT_NAME}/${APP2_NAME}:$CIRCLE_SHA1
       - sudo chown -R ubuntu:ubuntu /home/ubuntu/.kube
       - sudo chown -R $USER /home/ubuntu/.config
