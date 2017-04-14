@@ -91,25 +91,18 @@ dependencies {
 dependencyManagement {
     imports {
         mavenBom 'org.springframework.cloud:spring-cloud-dependencies:Camden.RELEASE'
-        // mavenBom 'org.springframework.cloud:spring-cloud-netflix:1.2.0.RELEASE'
     }
 }
 
 
-sourceSets {
-    main {
-        resources {
-            srcDir 'bower/components/synced'
-        }
-    }
-}
+//sourceSets {
+//    main {
+//        resources {
+//            srcDir 'bower/components/synced'
+//        }
+//    }
+//}
 
-
-task printResources {
-    println "Printing sourceSets"
-    println sourceSets.main.resources.srcDirs
-
-}
 
 build.dependsOn bowerSyncJavascript
 
