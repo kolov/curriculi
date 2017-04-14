@@ -15,7 +15,7 @@ dependencies:
   override:
     - ./gradlew bowerInstall
     - ./gradlew build
-    - ./gradlew buildImages
+#    - ./gradlew buildImages
 
 
 deployment:
