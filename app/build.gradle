@@ -100,10 +100,6 @@ sourceSets {
     main {
         resources {
             srcDir 'bower/components/synced'
-            def env = project.hasProperty('env')
-            if (env) {
-                srcDir "src/config/" + project.property('env')
-            }
         }
     }
 }
