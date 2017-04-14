@@ -14,6 +14,8 @@ dependencies:
 
   override:
     - ./gradlew clean build
+    - ls app/src/main/resources/static
+    - ls app/src/main/resources/static/assets
     - ./gradlew service-users:buildDocker
     - ./gradlew app:buildDocker
 
