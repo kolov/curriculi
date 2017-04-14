@@ -13,8 +13,10 @@ dependencies:
 
 
   override:
-    - lein bower install
-    - lein uberjar
+    - ./gradlew bowerInstall
+    - ./gradlew build
+    - ./gradlew buildImages
+
 
 deployment:
   prod:
