@@ -26,7 +26,7 @@ bower {
 
 task bowerSyncJavascript(type: Sync) {
     from 'bower/components/raw'
-    into "bower/components/synced/static/assets"
+    into 'src/main/resources/static/assets'
     exclude '**/README.md'
     exclude '**/angular*/index.js'
     exclude '**/angular*/ng*.js'
