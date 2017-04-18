@@ -36,11 +36,7 @@ Run their corresponding @SpringBootApplication main()
     aws ecr get-login --region eu-central-1
 
  
-    
 ## Kubernetes
-
-### Local registry
-   docker run -v /data/docker/registry:/var/lib/registry -d -p 5000:5000 --restart=always --name registry registry:2
 
 	 CURRI_ROOT=~/projects/curriculi
 	 kubectl delete configmap curri-config
