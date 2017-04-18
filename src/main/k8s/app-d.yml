@@ -20,7 +20,7 @@ spec:
           - name: SPRING_CONFIG_URI
             value: http://config-server:8888
           - name: SERVICE_USERS
-            value: service-users:8501
+            value: service-users:9000
           - name: SERVICE_DOCS
-            value: service-users:8502
+            value: service-docs:9000
 

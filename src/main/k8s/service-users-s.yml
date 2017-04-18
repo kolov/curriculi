@@ -5,7 +5,7 @@ metadata:
 spec:
   ports:
     - name: http
-      port: 8501
-      targetPort: 8501
+      port: 9000
+      targetPort: 9000
   selector:
     app: service-users

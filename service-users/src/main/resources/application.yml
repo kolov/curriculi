@@ -9,6 +9,6 @@ spring:
       uri:  "${MONGODB_URL:mongodb://127.0.0.1:27017/curri}"
 
 server:
-    port: 8501
+    port: ${SERVER_PORT:8501}
 
 

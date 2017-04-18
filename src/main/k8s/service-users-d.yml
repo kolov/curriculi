@@ -14,7 +14,7 @@ spec:
         image: eu.gcr.io/iconic-setup-91510/curriculi-service-users
         imagePullPolicy: Always
         ports:
-        - containerPort: 8501
+        - containerPort: 9000
         env:
           - name: MONGODB_URL
             value: mongodb://mongo-users:27017/curri-users
