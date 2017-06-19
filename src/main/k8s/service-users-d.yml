@@ -1,16 +1,16 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: service-users
+  name: curriculi-service-users
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        app: service-users
+        app: curriculi-service-users
     spec:
       containers:
-      - name: service-users
+      - name: curriculi-service-users
         image: eu.gcr.io/iconic-setup-91510/curriculi-service-users
         imagePullPolicy: Always
         ports:

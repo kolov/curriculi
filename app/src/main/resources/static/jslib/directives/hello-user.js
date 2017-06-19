@@ -24,7 +24,7 @@ civiModule.directive('helloUser', function () {
     scope: {
       user: '='
     },
-    templateUrl: '/directives/hello-user.html'
+    templateUrl: '/dirs/hello-user.html'
   };
 
 });

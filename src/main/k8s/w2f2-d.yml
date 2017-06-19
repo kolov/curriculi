@@ -1,0 +1,39 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: w2f2
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: w2f2
+    spec:
+      containers:
+      - name: w2f2
+        image: eu.gcr.io/iconic-setup-91510/w2f2
+        ports:
+        - containerPort: 3000
+        env:
+        - name: TRANSAVIA_SECRET
+          valueFrom:
+            configMapKeyRef:
+              name: w2f2-config
+              key: transavia.secret
+        - name: TRANSAVIA_KEY
+          valueFrom:
+            configMapKeyRef:
+              name: w2f2-config
+              key: transavia.key
+        - name: GOOGLE_CLIENT_SECRET
+          valueFrom:
+            configMapKeyRef:
+              name: w2f2-config
+              key: google.client.secret
+        - name: GOOGLE_GEOCODING_KEY
+          valueFrom:
+            configMapKeyRef:
+              name: w2f2-config
+              key: google.geocoding.key
+        - name: TIMBRE_LEVEL
+          value: ":debug"

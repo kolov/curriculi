@@ -156,7 +156,7 @@ civiModule.factory('currentService', ['$resource', function ($resource) {
 }]);
 
 civiModule.factory('usersService', ['$resource', function ($resource) {
-  return $resource('/current/user', {},
+  return $resource('/currenr', {},
     {
       'query': {isArray: false}
     });

@@ -1,19 +1,17 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: curriculi-nginx
+  name: curriculi-fe
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        app: curriculi-nginx
+        app: curriculi-fe
     spec:
       containers:
-      - name: nginx
-        image: eu.gcr.io/iconic-setup-91510/curriculi-nginx:a998eeee0697c1dabae76ea04de3050aa05f8bd0
+      - name: curriculi-fe
+        image: eu.gcr.io/iconic-setup-91510/curriculi-fe:latest
         ports:
         - containerPort: 80
-
-
 

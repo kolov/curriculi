@@ -6,33 +6,6 @@ apply plugin: 'scala'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'docker'
 
-bower {
-    installBase = 'bower/components/raw'
-
-    'angular'('1.2.9')
-    'bootstrap'('3.0.0')
-    'angular-ui-codemirror'('0.1.7')
-    'bootstrap-social'('latest')
-    'angular'('1.2.19')
-    'angular-route'('1.2.19')
-    'angular-resource'('1.2.19')
-    'angular-ui-router'('0.2.13')
-    'angular-bootstrap'('0.12.1')
-    'angular-sanitize'('1.2.19')
-    'angular-ui-switch'('0.1.0')
-    'angular-load'('0.2.0')
-    'underscore'('1.8.3')
-}
-
-task bowerSyncJavascript(type: Sync) {
-    from 'bower/components/raw'
-    into 'src/main/resources/static/assets'
-    exclude '**/README.md'
-    exclude '**/angular*/index.js'
-    exclude '**/angular*/ng*.js'
-
-    dependsOn bowerInstall
-}
 
 
 
@@ -60,10 +33,8 @@ repositories {
 }
 
 dependencies {
-    compile project(":common")
 
     compile("org.springframework.boot:spring-boot-starter-web")
-    compile("org.springframework.cloud:spring-cloud-starter-config")
     compile("org.springframework.cloud:spring-cloud-starter-zuul")
     compile('org.springframework.cloud:spring-cloud-starter-feign')
 
@@ -95,16 +66,6 @@ dependencyManagement {
 }
 
 
-//sourceSets {
-//    main {
-//        resources {
-//            srcDir 'bower/components/synced'
-//        }
-//    }
-//}
-
-
-build.dependsOn bowerSyncJavascript
 
 
 task buildDocker(type: Docker) {

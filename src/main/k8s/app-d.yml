@@ -17,10 +17,8 @@ spec:
         env:
           - name: REDIS_HOST
             value: redis
-          - name: SPRING_CONFIG_URI
-            value: http://config-server:8888
           - name: SERVICE_USERS
-            value: service-users:9000
+            value: curriculi-service-users:9000
           - name: SERVICE_DOCS
             value: service-docs:9000
 
