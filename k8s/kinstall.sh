@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Comment out otr replace the following line
+# Comment out or replace the following line
 export CURRI_ROOT=~/projects/curriculi
 #export DOCKER_REGISTRY=391471456712.dkr.ecr.eu-central-1.amazonaws.com
 if [ -z ${CURRI_ROOT+x} ]; then
