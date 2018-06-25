@@ -35,4 +35,7 @@ fi
 echo Will use CURRI_PROJECT=$CURRI_PROJECT
 $CURRI_PROJECT/curri-users/k8s/deploy-all-$CURRI_DEST.sh
 $CURRI_PROJECT/curri-gate/k8s/deploy-all-$CURRI_DEST.sh
+$CURRI_PROJECT/curri-elm/k8s/deploy-all-$CURRI_DEST.sh
+
+kubectl apply -f $DIR/ingress-$CURRI_DEST.yml
 

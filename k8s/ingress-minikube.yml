@@ -1,0 +1,35 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: curriculi
+#  annotations:
+#    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  backend:
+    serviceName: nginx
+    servicePort: 80
+  rules:
+  - host: docker.xip.io
+    http:
+      paths:
+      - path: /echo
+        backend:
+          serviceName: echoserver
+          servicePort: 8080
+      - path: /
+        backend:
+          serviceName: curri-elm
+          servicePort: 80
+      - path: /service
+        backend:
+          serviceName: concierge
+          servicePort: 9000
+      - path: /login
+        backend:
+          serviceName: concierge
+          servicePort: 9000
+      - path: /logout
+        backend:
+          serviceName: concierge
+          servicePort: 9000
+
